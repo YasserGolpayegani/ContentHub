@@ -26,14 +26,12 @@ public sealed class Post : BaseAuditableEntity
     {
     }
 
-    public Post(string title,string content,string slug, Guid categoryId)
+    public Post(string title,string content,string slug)
     {
         Title = title;
         Content = content;
         Slug = slug;
-        IsPublished = false;
-
-        CategoryId = categoryId;
+        IsPublished = false;       
     }
 
     public void Publish()

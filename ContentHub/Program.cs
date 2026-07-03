@@ -9,6 +9,7 @@ builder.Services.AddOpenApi();
 
 //-----------------------------------------
 builder.Services.AddPersistence(builder.Configuration);
+builder.Services.AddApplicationService();
 //-----------------------------------------
 
 var app = builder.Build();

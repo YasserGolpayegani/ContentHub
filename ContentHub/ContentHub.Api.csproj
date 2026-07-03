@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ContentHub.Application\ContentHub.Application.csproj" />
     <ProjectReference Include="..\ContentHub.Persistence\ContentHub.Persistence.csproj" />
   </ItemGroup>
 

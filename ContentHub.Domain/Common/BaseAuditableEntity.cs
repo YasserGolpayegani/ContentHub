@@ -7,9 +7,6 @@ namespace ContentHub.Domain.Common;
 
 public class BaseAuditableEntity : BaseEntity, ISoftDelete
 {
-    /// <summary>
-    /// Represents an auditable entity in the system.
-    /// </summary>
     public DateTime CreatedOnUtc { get; private set; }
     public DateTime? ModifiedOnUtc { get; private set; }
     public DateTime? DeletedOnUtc { get; private set; }

@@ -1,4 +1,6 @@
-﻿using ContentHub.Persistence.Contexts;
+﻿using ContentHub.Application.Interfaces;
+using ContentHub.Application.Services;
+using ContentHub.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 namespace ContentHub.Api.Extensions;
 
@@ -13,6 +15,13 @@ public static class ServiceCollectionExtensions
             options.UseSqlServer(
                 configuration.GetConnectionString("DefaultConnection"));
         });
+
+        return services;
+    }
+
+    public static IServiceCollection AddApplicationService(this IServiceCollection services)
+    {
+        services.AddScoped<IPostService, PostService>();
 
         return services;
     }
