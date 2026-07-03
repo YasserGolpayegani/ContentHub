@@ -10,7 +10,5 @@ namespace ContentHub.Domain.Common;
 /// </summary>
 public abstract class BaseEntity
 {
-    public Guid Id { get; protected set; }
-    public DateTime CreatedOnUtc { get; protected set; }
-    public DateTime? ModifiedOnUtc { get; set; }
+    public Guid Id { get; protected set; }    
 }
