@@ -1,5 +1,5 @@
-﻿using ContentHub.Application.DTOs;
-using ContentHub.Application.Interfaces;
+﻿using ContentHub.Application.DTOs.Posts;
+using ContentHub.Application.Interfaces.Posts;
 using ContentHub.Domain.Entities;
 using System;
 using System.Collections.Generic;

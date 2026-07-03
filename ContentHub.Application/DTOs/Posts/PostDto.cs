@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ContentHub.Application.DTOs;
+namespace ContentHub.Application.DTOs.Posts;
 
 public class PostDto
 {

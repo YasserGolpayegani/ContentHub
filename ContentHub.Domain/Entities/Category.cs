@@ -11,7 +11,7 @@ public class Category : BaseAuditableEntity
 
     private Category() { }
 
-    public Category(string name, string slug)
+    public Category(string name,string slug)
     {
         Name = name;
         Slug = slug;

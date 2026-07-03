@@ -3,7 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ContentHub.Application.Interfaces;
+
+namespace ContentHub.Application.Interfaces.Posts;
 
 public interface IPostRepository
 {
@@ -11,6 +12,5 @@ public interface IPostRepository
     Task<Post?> GetByIdAsync(Guid id);
     Task AddAsync(Post post);
     Task SaveChangesAsync();
-
 
 }

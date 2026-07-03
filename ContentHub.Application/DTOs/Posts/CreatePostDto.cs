@@ -1,4 +1,4 @@
-﻿namespace ContentHub.Application.DTOs;
+﻿namespace ContentHub.Application.DTOs.Posts;
 
 public class CreatePostDto
 {

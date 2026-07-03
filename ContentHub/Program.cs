@@ -9,7 +9,8 @@ builder.Services.AddOpenApi();
 
 //-----------------------------------------
 builder.Services.AddPersistence(builder.Configuration);
-builder.Services.AddApplicationService();
+builder.Services.AddApplicationServices();
+builder.Services.AddPersistenceRepositories();
 //-----------------------------------------
 
 var app = builder.Build();

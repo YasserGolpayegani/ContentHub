@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ContentHub.Application.DTOs;
-namespace ContentHub.Application.Interfaces;
+using ContentHub.Application.DTOs.Posts;
+
+namespace ContentHub.Application.Interfaces.Posts;
 
 public interface IPostService
 {
