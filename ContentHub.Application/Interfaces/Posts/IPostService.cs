@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ContentHub.Application.DTOs.Posts;
+﻿using ContentHub.Application.DTOs.Posts;
 
 namespace ContentHub.Application.Interfaces.Posts;
 
 public interface IPostService
 {
-    Task<List<PostDto>> GetAllAsync();
-    Task<PostDto?> GetByIdAsync(Guid id);
-    Task<Guid> CreateAsync(CreatePostDto dto);
+    Task<List<PostDto>> GetAllAsync(CancellationToken cancellationToken = default);
+    Task<PostDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<Guid> CreateAsync(CreatePostDto dto, CancellationToken cancellationToken = default);
+    Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }

@@ -2,9 +2,6 @@
 using ContentHub.Domain.Entities;
 using ContentHub.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ContentHub.Persistence.Repositories;
 
@@ -17,23 +14,23 @@ public class CategoryRepository : ICategoryRepository
         _context = context;
     }
 
-    public async Task<List<Category>> GetAllAsync()
+    public async Task<List<Category>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         return await _context.Categories.OrderBy(x => x.Name).ToListAsync();
     }
 
-    public async Task<Category?> GetByIdAsync(Guid id)
+    public async Task<Category?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task AddAsync(Category category)
+    public async Task AddAsync(Category category, CancellationToken cancellationToken = default)
     {
         await _context.Categories.AddAsync(category);
     }
 
-    public Task SaveChangesAsync()
+    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        await _context.SaveChangesAsync();
     }
 }

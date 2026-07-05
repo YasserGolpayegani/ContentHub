@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ContentHub.Application.DTOs.Posts;
+﻿namespace ContentHub.Application.DTOs.Posts;
 
 public class PostDto
 {

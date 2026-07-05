@@ -1,7 +1,4 @@
 ﻿using ContentHub.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ContentHub.Domain.Entities;
 

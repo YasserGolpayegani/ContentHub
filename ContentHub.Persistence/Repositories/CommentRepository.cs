@@ -14,23 +14,23 @@ public class CommentRepository : ICommentRepository
         _context = context;
     }
 
-    public async Task AddAsync(Comment comment)
+    public async Task<List<Comment>> GetByPostIdAsync(Guid postId, CancellationToken cancellationToken = default)
     {
-        await _context.Comments.AddAsync(comment);
+        return await _context.Comments.Where(x => x.PostId == postId).ToListAsync();
     }
 
-    public async Task<Comment?> GetByIdAsync(Guid id)
+    public async Task<Comment?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.Comments
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<List<Comment>> GetByPostIdAsync(Guid postId)
+    public async Task AddAsync(Comment comment, CancellationToken cancellationToken = default)
     {
-        return await _context.Comments.Where(x => x.PostId == postId).ToListAsync();
+        await _context.Comments.AddAsync(comment);
     }
 
-    public async Task SaveChangesAsync()
+    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         await _context.SaveChangesAsync();
     }

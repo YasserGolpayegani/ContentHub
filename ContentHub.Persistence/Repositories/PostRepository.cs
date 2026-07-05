@@ -2,9 +2,6 @@
 using ContentHub.Domain.Entities;
 using ContentHub.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ContentHub.Persistence.Repositories;
 
@@ -17,22 +14,22 @@ public class PostRepository : IPostRepository
         _context = context;
     }
 
-    public async Task<List<Post>> GetAllAsync()
+    public async Task<List<Post>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         return await _context.Posts.OrderByDescending(x => x.CreatedOnUtc).ToListAsync();
     }
 
-    public async Task<Post?> GetByIdAsync(Guid id)
+    public async Task<Post?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.Posts.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task AddAsync(Post post)
+    public async Task AddAsync(Post post, CancellationToken cancellationToken = default)
     {
         await _context.Posts.AddAsync(post);
     }
 
-    public async Task SaveChangesAsync()
+    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         await _context.SaveChangesAsync();
     }

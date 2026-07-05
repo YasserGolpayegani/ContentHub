@@ -1,12 +1,11 @@
 ﻿using ContentHub.Application.DTOs.Categories;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ContentHub.Application.Interfaces.Categories;
 
 public interface ICategoryServices
 {
-    Task<List<CategoryDto>> GetAllAsync();
-    Task<Guid> CreateAsync(CreateCategoryDto dto);
+    Task<List<CategoryDto>> GetAllAsync(CancellationToken cancellationToken = default);
+    Task<CategoryDto?> GetById(Guid id, CancellationToken cancellationToken = default);
+    Task<Guid> CreateAsync(CreateCategoryDto dto, CancellationToken cancellationToken = default);
+    Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }

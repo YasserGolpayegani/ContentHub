@@ -4,8 +4,8 @@ namespace ContentHub.Application.Interfaces.Comments;
 
 public interface ICommentRepository
 {
-    Task<Comment?> GetByIdAsync(Guid id);
-    Task<List<Comment>> GetByPostIdAsync(Guid postId);
-    Task AddAsync(Comment comment);
-    Task SaveChangesAsync();
+    Task<List<Comment>> GetByPostIdAsync(Guid postId, CancellationToken cancellationToken = default);
+    Task<Comment?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task AddAsync(Comment comment, CancellationToken cancellationToken = default);
+    Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }

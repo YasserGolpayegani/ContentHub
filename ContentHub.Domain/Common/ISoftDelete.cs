@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ContentHub.Domain.Common;
+﻿namespace ContentHub.Domain.Common;
 
 /// <summary>
 /// Represent an entity that supports soft deletion

@@ -1,16 +1,13 @@
 ﻿using ContentHub.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 
 namespace ContentHub.Application.Interfaces.Posts;
 
 public interface IPostRepository
 {
-    Task<List<Post>> GetAllAsync();
-    Task<Post?> GetByIdAsync(Guid id);
-    Task AddAsync(Post post);
-    Task SaveChangesAsync();
+    Task<List<Post>> GetAllAsync(CancellationToken cancellationToken = default);
+    Task<Post?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task AddAsync(Post post, CancellationToken cancellationToken = default);
+    Task SaveChangesAsync(CancellationToken cancellationToken = default);
 
 }

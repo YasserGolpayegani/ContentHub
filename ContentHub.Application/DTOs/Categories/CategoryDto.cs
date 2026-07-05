@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ContentHub.Application.DTOs.Categories;
+﻿namespace ContentHub.Application.DTOs.Categories;
 
 public class CategoryDto
 {

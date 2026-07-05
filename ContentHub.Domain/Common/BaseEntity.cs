@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ContentHub.Domain.Common;
+﻿namespace ContentHub.Domain.Common;
 
 /// <summary>
 /// Represents the base entity for all domain entities.
@@ -10,5 +6,5 @@ namespace ContentHub.Domain.Common;
 /// </summary>
 public abstract class BaseEntity
 {
-    public Guid Id { get; protected set; }    
+    public Guid Id { get; protected set; }
 }

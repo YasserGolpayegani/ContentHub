@@ -1,8 +1,4 @@
 ﻿using ContentHub.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml.Linq;
 
 namespace ContentHub.Domain.Entities;
 
@@ -26,12 +22,13 @@ public sealed class Post : BaseAuditableEntity
     {
     }
 
-    public Post(string title,string content,string slug)
+    public Post(string title, string content, string slug, Guid categoryId)
     {
         Title = title;
         Content = content;
         Slug = slug;
-        IsPublished = false;       
+        IsPublished = false;
+        CategoryId = categoryId;
     }
 
     public void Publish()
@@ -39,7 +36,7 @@ public sealed class Post : BaseAuditableEntity
         IsPublished = true;
     }
 
-    public void Update(string title,string content)
+    public void Update(string title, string content)
     {
         Title = title;
         Content = content;

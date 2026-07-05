@@ -1,14 +1,11 @@
 ﻿using ContentHub.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ContentHub.Application.Interfaces.Categories;
 
 public interface ICategoryRepository
 {
-    Task<List<Category>> GetAllAsync();
-    Task<Category?> GetByIdAsync(Guid id);
-    Task AddAsync(Category category);
-    Task SaveChangesAsync();
+    Task<List<Category>> GetAllAsync(CancellationToken cancellationToken = default);
+    Task<Category?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task AddAsync(Category category, CancellationToken cancellationToken = default);
+    Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }

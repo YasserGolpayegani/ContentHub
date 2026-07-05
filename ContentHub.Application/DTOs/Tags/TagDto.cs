@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ContentHub.Application.DTOs.Tags;
+﻿namespace ContentHub.Application.DTOs.Tags;
 
 public class TagDto
 {

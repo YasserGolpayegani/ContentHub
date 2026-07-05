@@ -1,13 +1,10 @@
 ﻿using ContentHub.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ContentHub.Persistence.Contexts.Configurations
 {
-    public class TagConfiguration:IEntityTypeConfiguration<Tag>
+    public class TagConfiguration : IEntityTypeConfiguration<Tag>
     {
         public void Configure(EntityTypeBuilder<Tag> builder)
         {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
-
-namespace ContentHub.Domain.Common;
+﻿namespace ContentHub.Domain.Common;
 
 public class BaseAuditableEntity : BaseEntity, ISoftDelete
 {

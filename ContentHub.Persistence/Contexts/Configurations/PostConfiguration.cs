@@ -1,13 +1,10 @@
 ﻿using ContentHub.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ContentHub.Persistence.Contexts.Configurations;
 
-public sealed class PostConfiguration:IEntityTypeConfiguration<Post>
+public sealed class PostConfiguration : IEntityTypeConfiguration<Post>
 {
     public void Configure(EntityTypeBuilder<Post> builder)
     {

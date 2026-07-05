@@ -187,7 +187,7 @@ namespace ContentHub.Persistence.Migrations
 
                     b.HasIndex("TagsId");
 
-                    b.ToTable("PostTags");
+                    b.ToTable("PostTags", (string)null);
                 });
 
             modelBuilder.Entity("ContentHub.Domain.Entities.Comment", b =>
