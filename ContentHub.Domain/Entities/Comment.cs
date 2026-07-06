@@ -22,6 +22,7 @@ public class Comment : BaseAuditableEntity
     public void Update(string content)
     {
         Content = content;
+        MarkAsModified();
     }
 
 

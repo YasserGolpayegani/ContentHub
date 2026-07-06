@@ -1,4 +1,6 @@
 using ContentHub.Api.Extensions;
+using ContentHub.Application.Interfaces;
+using ContentHub.Infrastructure.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,10 @@ builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddPersistenceRepositories();
 builder.Services.AddApplicationServices();
 //-----------------------------------------
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.SectionName));
+builder.Services.AddInfrastructure(builder.Configuration);
+//-----------------------------------------
+
 
 var app = builder.Build();
 

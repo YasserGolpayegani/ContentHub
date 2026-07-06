@@ -1,8 +1,10 @@
-﻿using ContentHub.Application.Interfaces.Categories;
+﻿using ContentHub.Application.Interfaces;
+using ContentHub.Application.Interfaces.Categories;
 using ContentHub.Application.Interfaces.Comments;
 using ContentHub.Application.Interfaces.Posts;
 using ContentHub.Application.Interfaces.Tags;
 using ContentHub.Application.Services;
+using ContentHub.Infrastructure.Options;
 using ContentHub.Persistence.Contexts;
 using ContentHub.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +41,15 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<ITagRepository, TagRepository>();
         services.AddScoped<ICommentRepository, CommentRepository>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));
+
+        services.AddScoped<IJwtService, IJwtService>();
 
         return services;
     }

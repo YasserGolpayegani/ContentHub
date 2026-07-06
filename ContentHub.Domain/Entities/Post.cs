@@ -40,5 +40,6 @@ public sealed class Post : BaseAuditableEntity
     {
         Title = title;
         Content = content;
+        MarkAsModified();
     }
 }

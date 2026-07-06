@@ -19,5 +19,6 @@ public class Tag : BaseAuditableEntity
     public void Rename(string name)
     {
         Name = name;
+        MarkAsModified();
     }
 }

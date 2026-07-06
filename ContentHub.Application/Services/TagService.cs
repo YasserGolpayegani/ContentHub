@@ -27,7 +27,7 @@ public class TagService : ITagService
     {
         _logger.LogInformation("Creating a new Tag with Name '{Name}'", dto.Name);
         var tag = new Tag(dto.Name);
-
+        
         await _tagRepository.AddAsync(tag);
 
         await _tagRepository.SaveChangesAsync();
