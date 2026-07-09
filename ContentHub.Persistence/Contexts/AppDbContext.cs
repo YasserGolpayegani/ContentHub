@@ -1,10 +1,14 @@
 ﻿using ContentHub.Domain.Common;
 using ContentHub.Domain.Entities;
+using ContentHub.Domain.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ContentHub.Persistence.Contexts;
 
-public sealed class AppDbContext : DbContext
+//public sealed class AppDbContext : DbContext
+public class AppDbContext:IdentityDbContext<AppUser,IdentityRole<Guid>,Guid>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {

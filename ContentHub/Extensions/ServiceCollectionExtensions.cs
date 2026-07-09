@@ -4,10 +4,17 @@ using ContentHub.Application.Interfaces.Comments;
 using ContentHub.Application.Interfaces.Posts;
 using ContentHub.Application.Interfaces.Tags;
 using ContentHub.Application.Services;
+using ContentHub.Application.Validators;
+using ContentHub.Domain.Identity;
 using ContentHub.Infrastructure.Options;
+using ContentHub.Infrastructure.Services;
 using ContentHub.Persistence.Contexts;
 using ContentHub.Persistence.Repositories;
+using FluentValidation;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
+
 namespace ContentHub.Api.Extensions;
 
 public static class ServiceCollectionExtensions
@@ -32,6 +39,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ITagService, TagService>();
         services.AddScoped<ICommentService, CommentService>();
 
+        services.AddValidatorsFromAssembly(typeof(LoginRequestValidator).Assembly);
+
         return services;
     }
 
@@ -49,7 +58,22 @@ public static class ServiceCollectionExtensions
     {
         services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));
 
-        services.AddScoped<IJwtService, IJwtService>();
+        services.AddScoped<IJwtService, JwtService>();
+        services.AddIdentity<AppUser, IdentityRole<Guid>>(options =>
+        {
+            options.Password.RequiredLength = 3;
+            options.Password.RequireDigit = false;
+            options.Password.RequireLowercase = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequireNonAlphanumeric = false;
+
+            options.User.RequireUniqueEmail = true;
+        })
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
+
+        services.AddScoped<IJwtService, JwtService>();
+        services.AddScoped<IAuthService, AuthService>();
 
         return services;
     }

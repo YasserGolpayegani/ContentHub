@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ContentHub.Application.Authentication;
+using ContentHub.Domain.Identity;
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Text;
@@ -7,5 +9,5 @@ namespace ContentHub.Application.Interfaces;
 
 public interface IJwtService
 {
-    string GenerateToken(Guid userId, string userName, IEnumerable<Claim> additionalClaims);
+    JwtTokenResult GenerateToken(AppUser user, IEnumerable<string> roles);
 }
