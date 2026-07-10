@@ -1,5 +1,7 @@
 ﻿using ContentHub.Application.DTOs.Posts;
+using ContentHub.Application.Features.Posts.Commands;
 using ContentHub.Application.Interfaces.Posts;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContentHub.Api.Controllers
@@ -9,38 +11,52 @@ namespace ContentHub.Api.Controllers
     [ApiController]
     public class PostsController : ControllerBase
     {
-        private readonly IPostService _postService;
+        //private readonly IPostService _postService;
+        private readonly ISender _sender;
 
-        public PostsController(IPostService postService)
+        public PostsController(ISender sender)
         {
-            _postService = postService;
+            _sender = sender;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<PostDto>>> GetAll(CancellationToken cancellationToken = default)
-        {
-            var posts = await _postService.GetAllAsync();
+        //public PostsController(IPostService postService)
+        //{
+        //    _postService = postService;
+        //}
 
-            return Ok(posts);
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<List<PostDto>>> GetAll(CancellationToken cancellationToken = default)
+        //{
+        //    var posts = await _postService.GetAllAsync();
+
+        //    return Ok(posts);
+        //}
 
 
         [HttpGet("{id:guid}")]
-        public async Task<ActionResult<PostDto>> GetById(Guid id, CancellationToken cancellationToken = default)
+       public async Task<ActionResult<PostDto>> GetById(Guid id, CancellationToken cancellationToken = default)
         {
-            var post = await _postService.GetByIdAsync(id);
+            //    var post = await _postService.GetByIdAsync(id);
 
-            if (post is null)
-                return NotFound();
+            //    if (post is null)
+            //        return NotFound();
 
-            return Ok(post);
-        }
+            //return Ok(post);
+            return Ok();
+       }
+
 
         [HttpPost]
-        public async Task<ActionResult<Guid>> Create(CreatePostDto dto, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<Guid>>Create(
+            CreatePostCommand command,CancellationToken cancellationToken)
         {
-            var id = await _postService.CreateAsync(dto);
+            var id = await _sender.Send(command, cancellationToken);
             return CreatedAtAction(nameof(GetById), new { id }, id);
         }
+        //public async Task<ActionResult<Guid>> Create(CreatePostDto dto, CancellationToken cancellationToken = default)
+        //{
+        //    var id = await _postService.CreateAsync(dto);
+        //    return CreatedAtAction(nameof(GetById), new { id }, id);
+        //}
     }
 }

@@ -1,4 +1,6 @@
-﻿using ContentHub.Application.Interfaces;
+﻿using ContentHub.Application.Behaviors;
+using ContentHub.Application.Features.Posts.Commands;
+using ContentHub.Application.Interfaces;
 using ContentHub.Application.Interfaces.Categories;
 using ContentHub.Application.Interfaces.Comments;
 using ContentHub.Application.Interfaces.Posts;
@@ -39,7 +41,16 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ITagService, TagService>();
         services.AddScoped<ICommentService, CommentService>();
 
-        services.AddValidatorsFromAssembly(typeof(LoginRequestValidator).Assembly);
+        //services.AddValidatorsFromAssembly(typeof(LoginRequestValidator).Assembly);
+
+        services.AddMediatR(config =>
+        {
+            config.RegisterServicesFromAssemblyContaining<CreatePostCommand>();
+
+            config.AddOpenBehavior(typeof(ValidationBehaviors<,>));
+        });
+
+        services.AddValidatorsFromAssemblyContaining<CreatePostCommandValidator>();
 
         return services;
     }

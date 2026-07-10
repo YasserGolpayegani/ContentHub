@@ -39,7 +39,7 @@ public sealed class GlobalExceptionMiddleware
             ValidationException => (StatusCodes.Status400BadRequest, "Bad Request"),
 
             NotFoundException => (StatusCodes.Status404NotFound, "Not Found"),
-
+            
             _ => (StatusCodes.Status500InternalServerError, "Internal Server Error")
         };
 
@@ -52,6 +52,9 @@ public sealed class GlobalExceptionMiddleware
             Detail = exception.Message,
             Instance = context.Request.Path
         };
+
+        if (exception is ValidationException validationException)
+            problemDetails.Extensions["errors"] = validationException.Errors;
 
         await context.Response.WriteAsJsonAsync(problemDetails);
     }

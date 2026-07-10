@@ -8,11 +8,19 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="12.1.1" />
+    <PackageReference Include="MediatR" Version="14.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.9" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ContentHub.Domain\ContentHub.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\Auth\Commands\" />
+    <Folder Include="Features\Auth\Handlers\" />
+    <Folder Include="Features\Auth\Queries\" />
+    <Folder Include="Features\Posts\Queries\" />
   </ItemGroup>
 
 </Project>
