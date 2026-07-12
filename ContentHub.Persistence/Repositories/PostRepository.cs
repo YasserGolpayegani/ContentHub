@@ -14,23 +14,37 @@ public class PostRepository : IPostRepository
         _context = context;
     }
 
-    public async Task<List<Post>> GetAllAsync(CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<Post>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await _context.Posts.OrderByDescending(x => x.CreatedOnUtc).ToListAsync();
+        return await _context.Posts
+            .AsNoTracking()
+            .OrderByDescending(x => x.CreatedOnUtc)
+            .ToListAsync();
     }
 
     public async Task<Post?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _context.Posts.FirstOrDefaultAsync(x => x.Id == id);
+        return await _context.Posts.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
     public async Task AddAsync(Post post, CancellationToken cancellationToken = default)
     {
-        await _context.Posts.AddAsync(post);
+        await _context.Posts.AddAsync(post,cancellationToken);
+    }
+
+    public void Update(Post post)
+    {
+        _context.Posts.Update(post);        
+    }
+
+    public void Delete(Post post)
+    {
+        _context.Posts.Remove(post);       
     }
 
     public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
+
 }

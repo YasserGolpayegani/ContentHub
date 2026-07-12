@@ -1,5 +1,5 @@
 ﻿using ContentHub.Application.Behaviors;
-using ContentHub.Application.Features.Posts.Commands;
+using ContentHub.Application.Features.Posts.Commands.CreatePost;
 using ContentHub.Application.Interfaces;
 using ContentHub.Application.Interfaces.Categories;
 using ContentHub.Application.Interfaces.Comments;
@@ -47,7 +47,7 @@ public static class ServiceCollectionExtensions
         {
             config.RegisterServicesFromAssemblyContaining<CreatePostCommand>();
 
-            config.AddOpenBehavior(typeof(ValidationBehaviors<,>));
+            config.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
 
         services.AddValidatorsFromAssemblyContaining<CreatePostCommandValidator>();

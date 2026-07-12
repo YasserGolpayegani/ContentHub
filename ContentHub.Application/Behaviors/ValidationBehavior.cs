@@ -3,12 +3,12 @@ using MediatR;
 
 namespace ContentHub.Application.Behaviors;
 
-public sealed class ValidationBehaviors<TRequest, TResponse>
+public sealed class ValidationBehavior<TRequest, TResponse>
     : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
-    public ValidationBehaviors(IEnumerable<IValidator<TRequest>> validators)
+    public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
     {
         _validators = validators;
     }

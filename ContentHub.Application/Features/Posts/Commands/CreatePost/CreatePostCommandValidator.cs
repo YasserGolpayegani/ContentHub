@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ContentHub.Application.Features.Posts.Commands;
+namespace ContentHub.Application.Features.Posts.Commands.CreatePost;
 
 public sealed class CreatePostCommandValidator:AbstractValidator<CreatePostCommand>
 {

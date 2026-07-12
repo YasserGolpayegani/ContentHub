@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using System.Text;
 
-namespace ContentHub.Application.Features.Posts.Handlers;
+namespace ContentHub.Application.Features.Posts.Commands.CreatePost;
 
 public sealed class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Guid>
 {

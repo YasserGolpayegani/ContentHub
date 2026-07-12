@@ -36,10 +36,14 @@ public sealed class Post : BaseAuditableEntity
         IsPublished = true;
     }
 
-    public void Update(string title, string content)
+    public void Update(string title, string content,string slug, Guid categoryId)
     {
         Title = title;
         Content = content;
+        Slug = slug;
+        CategoryId = categoryId;
+
+        //maybe it is not require enymore
         MarkAsModified();
     }
 }

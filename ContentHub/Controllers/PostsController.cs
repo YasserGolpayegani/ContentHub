@@ -1,5 +1,7 @@
 ﻿using ContentHub.Application.DTOs.Posts;
-using ContentHub.Application.Features.Posts.Commands;
+using ContentHub.Application.Features.Posts.Commands.CreatePost;
+using ContentHub.Application.Features.Posts.Commands.DeletePost;
+using ContentHub.Application.Features.Posts.Commands.UpdatePost;
 using ContentHub.Application.Interfaces.Posts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -58,5 +60,29 @@ namespace ContentHub.Api.Controllers
         //    var id = await _postService.CreateAsync(dto);
         //    return CreatedAtAction(nameof(GetById), new { id }, id);
         //}
+
+
+        [HttpPut("{id:guid}")]
+        public async Task<IActionResult> Update(
+            Guid id,
+            UpdatePostCommand command,
+            CancellationToken cancellationToken)
+        {
+            if (id != command.Id)
+                return BadRequest();
+
+            await _sender.Send(command, cancellationToken);
+
+            return NoContent();
+        }
+
+
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
+        {
+            await _sender.Send(new DeletePostCommand(id), cancellationToken);
+
+            return NoContent();
+        }
     }
 }
