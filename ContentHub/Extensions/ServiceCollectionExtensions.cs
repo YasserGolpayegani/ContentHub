@@ -13,9 +13,13 @@ using ContentHub.Infrastructure.Services;
 using ContentHub.Persistence.Contexts;
 using ContentHub.Persistence.Repositories;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
+using System.Text;
 
 namespace ContentHub.Api.Extensions;
 
@@ -33,6 +37,7 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
+
 
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
@@ -55,6 +60,7 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
+
     public static IServiceCollection AddPersistenceRepositories(this IServiceCollection services)
     {
         services.AddScoped<IPostRepository, PostRepository>();
@@ -65,23 +71,66 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
+
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));
 
-        services.AddScoped<IJwtService, JwtService>();
-        services.AddIdentity<AppUser, IdentityRole<Guid>>(options =>
-        {
-            options.Password.RequiredLength = 3;
-            options.Password.RequireDigit = false;
-            options.Password.RequireLowercase = false;
-            options.Password.RequireUppercase = false;
-            options.Password.RequireNonAlphanumeric = false;
+        var jwtOptions = configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>();
 
-            options.User.RequireUniqueEmail = true;
+
+        services.AddIdentityCore<AppUser>(options =>
+               {
+                   options.Password.RequiredLength = 3;
+                   options.Password.RequireDigit = false;
+                   options.Password.RequireLowercase = false;
+                   options.Password.RequireUppercase = false;
+                   options.Password.RequireNonAlphanumeric = false;
+
+                   options.User.RequireUniqueEmail = true;
+               })
+                   .AddRoles<IdentityRole<Guid>>()
+                   .AddEntityFrameworkStores<AppDbContext>()
+                   .AddDefaultTokenProviders();
+
+
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
         })
-            .AddEntityFrameworkStores<AppDbContext>()
-            .AddDefaultTokenProviders();
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = jwtOptions.Issuer,
+
+                ValidateAudience = true,
+                ValidAudience = jwtOptions.Audience,
+
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecretKey)),
+
+                ValidateLifetime = true,
+
+                ClockSkew = TimeSpan.Zero
+            };
+        });
+
+
+        services.AddAuthorization(options =>
+        {
+            //it doesn't need anymore because of use of IdentityCore.
+            //options.DefaultPolicy = new AuthorizationPolicyBuilder(
+            //    JwtBearerDefaults.AuthenticationScheme)
+            //    .RequireAuthenticatedUser()
+            //    .Build();
+
+            options.AddPolicy(Policies.AdminOnly, policy => policy.RequireRole(Roles.Admin));
+            options.AddPolicy(Policies.AuthorOrAdmin, policy => policy.RequireRole(Roles.Admin, Roles.Author));
+        });
 
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<IAuthService, AuthService>();

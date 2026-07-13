@@ -28,7 +28,6 @@ builder.Services.AddScoped<IdentityDataSeeder>();
 
 var app = builder.Build();
 
-
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -40,6 +39,8 @@ app.UseHttpsRedirection();
 //-----------------------------------------
 app.UseGlobalExceptionHandling();
 //-----------------------------------------
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();

@@ -3,7 +3,10 @@ using ContentHub.Application.Features.Posts.Commands.CreatePost;
 using ContentHub.Application.Features.Posts.Commands.DeletePost;
 using ContentHub.Application.Features.Posts.Commands.UpdatePost;
 using ContentHub.Application.Interfaces.Posts;
+using ContentHub.Domain.Identity;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContentHub.Api.Controllers
@@ -35,8 +38,9 @@ namespace ContentHub.Api.Controllers
         //}
 
 
+        [AllowAnonymous]
         [HttpGet("{id:guid}")]
-       public async Task<ActionResult<PostDto>> GetById(Guid id, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<PostDto>> GetById(Guid id, CancellationToken cancellationToken = default)
         {
             //    var post = await _postService.GetByIdAsync(id);
 
@@ -44,13 +48,14 @@ namespace ContentHub.Api.Controllers
             //        return NotFound();
 
             //return Ok(post);
+
             return Ok();
-       }
+        }
 
-
+        [Authorize(Roles = Roles.Admin + "," + Roles.Author)]
         [HttpPost]
-        public async Task<ActionResult<Guid>>Create(
-            CreatePostCommand command,CancellationToken cancellationToken)
+        public async Task<ActionResult<Guid>> Create(
+            CreatePostCommand command, CancellationToken cancellationToken)
         {
             var id = await _sender.Send(command, cancellationToken);
             return CreatedAtAction(nameof(GetById), new { id }, id);
@@ -62,6 +67,8 @@ namespace ContentHub.Api.Controllers
         //}
 
 
+        //[Authorize(Roles = Roles.Author + "," + Roles.Admin)]  //Or
+        [Authorize(Policy =Policies.AuthorOrAdmin)]
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(
             Guid id,
@@ -77,12 +84,17 @@ namespace ContentHub.Api.Controllers
         }
 
 
+        
+        [Authorize(Roles = Roles.Admin)]
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
-            await _sender.Send(new DeletePostCommand(id), cancellationToken);
+            //await _sender.Send(new DeletePostCommand(id), cancellationToken);
 
-            return NoContent();
+            //return NoContent();
+
+            var header = Request.Headers.Authorization.ToString();
+            return Ok(header);
         }
     }
 }
