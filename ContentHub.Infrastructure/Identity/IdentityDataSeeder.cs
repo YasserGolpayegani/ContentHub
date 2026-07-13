@@ -1,4 +1,5 @@
-﻿using ContentHub.Domain.Identity;
+﻿using ContentHub.Application.Authorization;
+using ContentHub.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using System;

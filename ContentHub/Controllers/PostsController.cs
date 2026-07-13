@@ -1,4 +1,5 @@
-﻿using ContentHub.Application.DTOs.Posts;
+﻿using ContentHub.Application.Authorization;
+using ContentHub.Application.DTOs.Posts;
 using ContentHub.Application.Features.Posts.Commands.CreatePost;
 using ContentHub.Application.Features.Posts.Commands.DeletePost;
 using ContentHub.Application.Features.Posts.Commands.UpdatePost;
@@ -24,19 +25,6 @@ namespace ContentHub.Api.Controllers
             _sender = sender;
         }
 
-        //public PostsController(IPostService postService)
-        //{
-        //    _postService = postService;
-        //}
-
-        //[HttpGet]
-        //public async Task<ActionResult<List<PostDto>>> GetAll(CancellationToken cancellationToken = default)
-        //{
-        //    var posts = await _postService.GetAllAsync();
-
-        //    return Ok(posts);
-        //}
-
 
         [AllowAnonymous]
         [HttpGet("{id:guid}")]
@@ -52,7 +40,9 @@ namespace ContentHub.Api.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = Roles.Admin + "," + Roles.Author)]
+
+        //[Authorize(Roles = Roles.Admin + "," + Roles.Author)]
+        [Authorize(Policy = Policies.CreatePosts)]
         [HttpPost]
         public async Task<ActionResult<Guid>> Create(
             CreatePostCommand command, CancellationToken cancellationToken)
@@ -60,15 +50,10 @@ namespace ContentHub.Api.Controllers
             var id = await _sender.Send(command, cancellationToken);
             return CreatedAtAction(nameof(GetById), new { id }, id);
         }
-        //public async Task<ActionResult<Guid>> Create(CreatePostDto dto, CancellationToken cancellationToken = default)
-        //{
-        //    var id = await _postService.CreateAsync(dto);
-        //    return CreatedAtAction(nameof(GetById), new { id }, id);
-        //}
 
 
         //[Authorize(Roles = Roles.Author + "," + Roles.Admin)]  //Or
-        [Authorize(Policy =Policies.AuthorOrAdmin)]
+        [Authorize(Policy = Policies.AuthorOrAdmin)]
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(
             Guid id,
@@ -84,7 +69,7 @@ namespace ContentHub.Api.Controllers
         }
 
 
-        
+
         [Authorize(Roles = Roles.Admin)]
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)

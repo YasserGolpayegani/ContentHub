@@ -1,4 +1,5 @@
-﻿using ContentHub.Application.Behaviors;
+﻿using ContentHub.Application.Authorization;
+using ContentHub.Application.Behaviors;
 using ContentHub.Application.Features.Posts.Commands.CreatePost;
 using ContentHub.Application.Interfaces;
 using ContentHub.Application.Interfaces.Categories;
@@ -63,6 +64,7 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddPersistenceRepositories(this IServiceCollection services)
     {
+        //this section should be remove later because we user MediatR and no need services
         services.AddScoped<IPostRepository, PostRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<ITagRepository, TagRepository>();
@@ -122,14 +124,35 @@ public static class ServiceCollectionExtensions
 
         services.AddAuthorization(options =>
         {
-            //it doesn't need anymore because of use of IdentityCore.
-            //options.DefaultPolicy = new AuthorizationPolicyBuilder(
-            //    JwtBearerDefaults.AuthenticationScheme)
-            //    .RequireAuthenticatedUser()
-            //    .Build();
+            options.AddPolicy(
+                Policies.AdminOnly,
+                policy => policy.RequireRole(Roles.Admin));
+            
+            options.AddPolicy(
+                Policies.AuthorOrAdmin, 
+                policy => policy.RequireRole(Roles.Admin, Roles.Author));
 
-            options.AddPolicy(Policies.AdminOnly, policy => policy.RequireRole(Roles.Admin));
-            options.AddPolicy(Policies.AuthorOrAdmin, policy => policy.RequireRole(Roles.Admin, Roles.Author));
+
+
+            options.AddPolicy(
+                 Policies.ViewPosts,
+                 policy => policy.RequireClaim("permission", Permissions.Posts.View));
+
+            options.AddPolicy(
+                Policies.CreatePosts, 
+                policy => policy.RequireClaim("permission", Permissions.Posts.Create));
+
+            options.AddPolicy(
+                Policies.UpdatePosts,
+                policy => policy.RequireClaim("permission", Permissions.Posts.Update));
+
+            options.AddPolicy(
+                Policies.DeletePosts,
+                policy => policy.RequireClaim("permission", Permissions.Posts.Delete));
+
+            options.AddPolicy(
+                Policies.PublishPosts,
+                policy => policy.RequireClaim("permission", Permissions.Posts.Publish));
         });
 
         services.AddScoped<IJwtService, JwtService>();

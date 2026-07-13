@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ContentHub.Domain.Identity;
+namespace ContentHub.Application.Authorization;
 
 public static class Roles
 {
