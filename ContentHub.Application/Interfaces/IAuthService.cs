@@ -1,10 +1,10 @@
-﻿using ContentHub.Application.DTOs.Auth;
+﻿using ContentHub.Application.Features.Auth.Commands.Login;
 
 namespace ContentHub.Application.Interfaces;
 
 public interface IAuthService
 {
-    Task<LoginResponseDto> LoginAsync(LoginRequestDto request, CancellationToken cancellationToken=default);
+    Task<LoginResponse> LoginAsync(LoginCommand request, CancellationToken cancellationToken=default);
 }
 
 

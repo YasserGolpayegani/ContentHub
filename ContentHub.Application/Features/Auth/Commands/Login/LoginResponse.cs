@@ -1,6 +1,6 @@
-﻿namespace ContentHub.Application.DTOs.Auth;
+﻿namespace ContentHub.Application.Features.Auth.Commands.Login;
 
-public sealed class LoginResponseDto
+public sealed class LoginResponse
 {
     public string AccessToken { get; init; } = string.Empty;
     public DateTime ExpireAtUtc { get; init; }

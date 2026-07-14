@@ -1,5 +1,6 @@
-﻿using ContentHub.Application.DTOs.Auth;
-using ContentHub.Application.Interfaces;
+﻿using ContentHub.Application.Features.Auth.Commands.Login;
+using ContentHub.Application.Features.Auth.Commands.Register;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,20 +12,28 @@ namespace ContentHub.Api.Controllers
     [ApiController]
     public sealed class AuthController : ControllerBase
     {
-        private readonly IAuthService _authService;
+        private readonly ISender _sender;
 
-        public AuthController(IAuthService authService)
+        public AuthController(ISender sender)
         {
-            _authService = authService;
+            _sender = sender;
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<LoginCommand>> Login(LoginCommand command, CancellationToken cancellationToken)
+        {
+            var response = await _sender.Send(command, cancellationToken);
+
+            return Ok(response);
         }
 
 
-        [HttpPost("login")]
-        public async Task<ActionResult<LoginRequestDto>> Login(LoginRequestDto request, CancellationToken cancellationToken)
+        [HttpPost("register")]
+        public async Task<ActionResult<Guid>> Register(RegisterCommand request, CancellationToken cancellationToken)
         {
-            var response = await _authService.LoginAsync(request, cancellationToken);
+            var userId = await _sender.Send(request, cancellationToken);
 
-            return Ok(response);
+            return CreatedAtAction(nameof(Register), new { id = userId }, userId);
         }
 
         //forTest

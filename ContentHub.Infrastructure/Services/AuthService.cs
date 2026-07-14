@@ -1,5 +1,5 @@
-﻿using ContentHub.Application.DTOs.Auth;
-using ContentHub.Application.Exceptions;
+﻿using ContentHub.Application.Exceptions;
+using ContentHub.Application.Features.Auth.Commands.Login;
 using ContentHub.Application.Interfaces;
 using ContentHub.Domain.Identity;
 using FluentValidation;
@@ -14,9 +14,9 @@ public sealed class AuthService:IAuthService
 {
     private readonly UserManager<AppUser> _userManager;
     private readonly IJwtService _jwtService;
-    private readonly IValidator<LoginRequestDto> _validator;
+    private readonly IValidator<LoginCommand> _validator;
 
-    public AuthService(UserManager<AppUser> userManager, IJwtService jwtService, IValidator<LoginRequestDto> validator)
+    public AuthService(UserManager<AppUser> userManager, IJwtService jwtService, IValidator<LoginCommand> validator)
     {
         _userManager = userManager;
         _jwtService = jwtService;
@@ -24,7 +24,7 @@ public sealed class AuthService:IAuthService
     }
     
 
-    public async Task<LoginResponseDto> LoginAsync(LoginRequestDto request, CancellationToken cancellationToken=default)
+    public async Task<LoginResponse> LoginAsync(LoginCommand request, CancellationToken cancellationToken=default)
     {
         var validationResult = await _validator.ValidateAsync(request, cancellationToken);
 
@@ -50,7 +50,7 @@ public sealed class AuthService:IAuthService
         var accessToken =  _jwtService.GenerateToken(user,roles);
 
 
-        return new LoginResponseDto
+        return new LoginResponse
         {
             AccessToken = accessToken.Token,
             ExpireAtUtc = accessToken.ExpiresAtUtc

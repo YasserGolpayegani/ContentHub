@@ -1,9 +1,9 @@
-﻿using ContentHub.Application.DTOs.Auth;
+﻿using ContentHub.Application.Features.Auth.Commands.Login;
 using FluentValidation;
 
 namespace ContentHub.Application.Validators;
 
-public sealed class LoginRequestValidator: AbstractValidator<LoginRequestDto>
+public sealed class LoginRequestValidator: AbstractValidator<LoginCommand>
 {
 	public LoginRequestValidator()
 	{

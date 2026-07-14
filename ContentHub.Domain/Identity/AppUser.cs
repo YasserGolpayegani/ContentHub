@@ -18,14 +18,18 @@ public class AppUser:IdentityUser<Guid>
     {
         FirstName = firstName;
         LastName = lastName;
-        Email = email;        
+        
+        Email = email;
+        UserName = email;
     }
+
+     
 
     public void Deactivate()
     {
         IsActive = false;
     }
 
-    public void Active() => IsActive = true;
+    public void Activate() => IsActive = true;
 
 }
