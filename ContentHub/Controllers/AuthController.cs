@@ -1,5 +1,7 @@
-﻿using ContentHub.Application.Features.Auth.Commands.Login;
-using ContentHub.Application.Features.Auth.Commands.Register;
+﻿using ContentHub.Application.Features.Authentication.Commands.Login;
+using ContentHub.Application.Features.Authentication.Commands.Logout;
+using ContentHub.Application.Features.Authentication.Commands.Refresh;
+using ContentHub.Application.Features.Authentication.Commands.Register;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -19,6 +21,9 @@ namespace ContentHub.Api.Controllers
             _sender = sender;
         }
 
+        /// <summary>
+        /// Authenticates a user and returns a JWT access token.
+        /// </summary>
         [HttpPost("login")]
         public async Task<ActionResult<LoginCommand>> Login(LoginCommand command, CancellationToken cancellationToken)
         {
@@ -36,9 +41,31 @@ namespace ContentHub.Api.Controllers
             return CreatedAtAction(nameof(Register), new { id = userId }, userId);
         }
 
-        //forTest
+
+        [HttpPost("refresh")]
+        [AllowAnonymous]
+        public async Task<ActionResult<LoginResponse>> Refresh(
+            [FromBody]RefreshCommand command,
+            CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(command, cancellationToken);
+            return Ok(result);
+        }
+
+
+        [HttpPost("logout")]
         [Authorize]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult> Logout(
+            [FromBody]LogoutCommand command,
+            CancellationToken cancellationToken)
+        {
+            await _sender.Send(command,cancellationToken);
+
+            return NoContent();
+        }
+
+
+        [Authorize]
         [HttpGet("profile")]
         public IActionResult Profile()
         {

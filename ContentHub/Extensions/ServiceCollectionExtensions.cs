@@ -1,12 +1,11 @@
 ﻿using ContentHub.Application.Authorization;
 using ContentHub.Application.Behaviors;
 using ContentHub.Application.Features.Posts.Commands.CreatePost;
-using ContentHub.Application.Interfaces;
+using ContentHub.Application.Interfaces.Authentication;
 using ContentHub.Application.Interfaces.Categories;
 using ContentHub.Application.Interfaces.Comments;
 using ContentHub.Application.Interfaces.Posts;
 using ContentHub.Application.Interfaces.Tags;
-using ContentHub.Application.Services;
 using ContentHub.Application.Validators;
 using ContentHub.Domain.Identity;
 using ContentHub.Infrastructure.Options;
@@ -42,10 +41,6 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        services.AddScoped<IPostService, PostService>();
-        services.AddScoped<ICategoryServices, CategoryService>();
-        services.AddScoped<ITagService, TagService>();
-        services.AddScoped<ICommentService, CommentService>();
 
         //services.AddValidatorsFromAssembly(typeof(LoginRequestValidator).Assembly);
 
@@ -64,11 +59,12 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddPersistenceRepositories(this IServiceCollection services)
     {
-        //this section should be remove later because we user MediatR and no need services
         services.AddScoped<IPostRepository, PostRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<ITagRepository, TagRepository>();
         services.AddScoped<ICommentRepository, CommentRepository>();
+
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
         return services;
     }
@@ -127,9 +123,9 @@ public static class ServiceCollectionExtensions
             options.AddPolicy(
                 Policies.AdminOnly,
                 policy => policy.RequireRole(Roles.Admin));
-            
+
             options.AddPolicy(
-                Policies.AuthorOrAdmin, 
+                Policies.AuthorOrAdmin,
                 policy => policy.RequireRole(Roles.Admin, Roles.Author));
 
 
@@ -139,7 +135,7 @@ public static class ServiceCollectionExtensions
                  policy => policy.RequireClaim("permission", Permissions.Posts.View));
 
             options.AddPolicy(
-                Policies.CreatePosts, 
+                Policies.CreatePosts,
                 policy => policy.RequireClaim("permission", Permissions.Posts.Create));
 
             options.AddPolicy(
@@ -156,7 +152,9 @@ public static class ServiceCollectionExtensions
         });
 
         services.AddScoped<IJwtService, JwtService>();
-        services.AddScoped<IAuthService, AuthService>();
+
+        services.AddScoped<IRefreshTokenService, RefreshTokenService>();
+
 
         return services;
     }

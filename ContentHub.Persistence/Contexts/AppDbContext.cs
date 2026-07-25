@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ContentHub.Persistence.Contexts;
 
-//public sealed class AppDbContext : DbContext
+
 public class AppDbContext:IdentityDbContext<AppUser,IdentityRole<Guid>,Guid>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
@@ -18,6 +18,7 @@ public class AppDbContext:IdentityDbContext<AppUser,IdentityRole<Guid>,Guid>
     public DbSet<Category> Categories => Set<Category>();
     public DbSet<Comment> Comments => Set<Comment>();
     public DbSet<Tag> Tags => Set<Tag>();
+    public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

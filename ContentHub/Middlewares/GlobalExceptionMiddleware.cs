@@ -22,7 +22,7 @@ public sealed class GlobalExceptionMiddleware
             await _next(context);
         }
 
-        catch(Exception exception)
+        catch (Exception exception)
         {
             _logger.LogError(exception, "Unhandled exception occurred.");
 
@@ -39,7 +39,7 @@ public sealed class GlobalExceptionMiddleware
             ValidationException => (StatusCodes.Status400BadRequest, "Bad Request"),
 
             NotFoundException => (StatusCodes.Status404NotFound, "Not Found"),
-            
+
             _ => (StatusCodes.Status500InternalServerError, "Internal Server Error")
         };
 
@@ -57,5 +57,8 @@ public sealed class GlobalExceptionMiddleware
             problemDetails.Extensions["errors"] = validationException.Errors;
 
         await context.Response.WriteAsJsonAsync(problemDetails);
+
+        
     }
+
 }

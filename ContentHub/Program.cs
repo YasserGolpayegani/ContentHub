@@ -18,7 +18,6 @@ builder.Services.AddPersistenceRepositories();
 builder.Services.AddApplicationServices();
 //-----------------------------------------
 
-builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.SectionName));
 builder.Services.AddInfrastructure(builder.Configuration);
 //-----------------------------------------
 
@@ -52,6 +51,7 @@ using(var scope = app.Services.CreateScope())
 
     await seeder.SeedAsync();
 }
+
 //-----------------------------------------
 
 app.Run();

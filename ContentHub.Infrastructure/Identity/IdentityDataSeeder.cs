@@ -8,6 +8,9 @@ using System.Text;
 
 namespace ContentHub.Infrastructure.Identity;
 
+/// <summary>
+/// Seeds the initial Identity data.
+/// </summary>
 public sealed class IdentityDataSeeder
 {
     private readonly RoleManager<IdentityRole<Guid>> _roleManager;
@@ -33,7 +36,8 @@ public sealed class IdentityDataSeeder
         var roles = new[]
         {
             Roles.Admin,
-            Roles.Author
+            Roles.Author,
+            Roles.User
         };
 
         foreach (var role in roles)

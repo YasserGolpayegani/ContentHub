@@ -1,4 +1,4 @@
-﻿using ContentHub.Application.Features.Auth.Commands.Login;
+﻿using ContentHub.Application.Features.Authentication.Commands.Login;
 using FluentValidation;
 
 namespace ContentHub.Application.Validators;

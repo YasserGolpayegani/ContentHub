@@ -4,11 +4,14 @@ using System.Text;
 
 namespace ContentHub.Application.Exceptions;
 
-public sealed class UnauthorizedException:Exception
+/// <summary>
+/// Represents an unauthorized request.
+/// </summary>
+public sealed class UnauthorizedException : Exception
 {
-	public UnauthorizedException(string message):base(message)
-	{
+    public UnauthorizedException(string message) : base(message)
+    {
 
-	}
+    }
 }
 

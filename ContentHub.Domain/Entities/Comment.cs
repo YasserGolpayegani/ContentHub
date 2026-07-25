@@ -2,6 +2,9 @@
 
 namespace ContentHub.Domain.Entities;
 
+/// <summary>
+/// Represents a comment submitted for a blog post.
+/// </summary>
 public class Comment : BaseAuditableEntity
 {
     private Comment() { }
@@ -21,8 +24,7 @@ public class Comment : BaseAuditableEntity
 
     public void Update(string content)
     {
-        Content = content;
-        MarkAsModified();
+        Content = content;        
     }
 
 

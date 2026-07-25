@@ -1,5 +1,5 @@
 ﻿using ContentHub.Application.Authentication;
-using ContentHub.Application.Interfaces;
+using ContentHub.Application.Interfaces.Authentication;
 using ContentHub.Domain.Identity;
 using ContentHub.Infrastructure.Options;
 using Microsoft.AspNetCore.Identity;

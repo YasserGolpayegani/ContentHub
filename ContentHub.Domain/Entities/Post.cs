@@ -42,8 +42,5 @@ public sealed class Post : BaseAuditableEntity
         Content = content;
         Slug = slug;
         CategoryId = categoryId;
-
-        //maybe it is not require enymore
-        MarkAsModified();
     }
 }

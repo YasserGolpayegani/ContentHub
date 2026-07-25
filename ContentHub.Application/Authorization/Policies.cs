@@ -4,6 +4,9 @@ using System.Text;
 
 namespace ContentHub.Application.Authorization;
 
+/// <summary>
+/// Contains all authorization policy names.
+/// </summary>
 public static class Policies
 {
     // Role Policies

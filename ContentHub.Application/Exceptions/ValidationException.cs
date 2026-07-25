@@ -2,6 +2,9 @@
 
 namespace ContentHub.Application.Exceptions;
 
+/// <summary>
+/// Represents a validation error.
+/// </summary>
 public sealed class ValidationException : Exception
 {
 	public IDictionary<string, string[]> Errors { get; }

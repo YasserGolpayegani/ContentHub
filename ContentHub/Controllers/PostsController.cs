@@ -3,6 +3,8 @@ using ContentHub.Application.DTOs.Posts;
 using ContentHub.Application.Features.Posts.Commands.CreatePost;
 using ContentHub.Application.Features.Posts.Commands.DeletePost;
 using ContentHub.Application.Features.Posts.Commands.UpdatePost;
+using ContentHub.Application.Features.Posts.Queries.GetAllPostsQuery;
+using ContentHub.Application.Features.Posts.Queries.GetPostById;
 using ContentHub.Application.Interfaces.Posts;
 using ContentHub.Domain.Identity;
 using MediatR;
@@ -30,14 +32,21 @@ namespace ContentHub.Api.Controllers
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<PostDto>> GetById(Guid id, CancellationToken cancellationToken = default)
         {
-            //    var post = await _postService.GetByIdAsync(id);
+            var post = await _sender.Send(new GetPostByIdQuery(id), cancellationToken);
+            //var post = await _postService.GetByIdAsync(id);
 
-            //    if (post is null)
-            //        return NotFound();
+            if (post is null)
+                return NotFound();
 
-            //return Ok(post);
+            return Ok(post);
+        }
 
-            return Ok();
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<ActionResult<IReadOnlyCollection<PostDto>>> GetAll(CancellationToken cancellationToken)
+        {
+            var posts = await _sender.Send(new GetAllPostsQuery(),cancellationToken);
+            return Ok(posts);        
         }
 
 

@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="ContentHub.Application/ContentHub.Application.csproj" />
+  <Project Path="ContentHub.Domain/ContentHub.Domain.csproj" />
+  <Project Path="ContentHub.Infrastructure/ContentHub.Infrastructure.csproj" />
+  <Project Path="ContentHub.Persistence/ContentHub.Persistence.csproj" />
+  <Project Path="ContentHub/ContentHub.Api.csproj" />
+</Solution>

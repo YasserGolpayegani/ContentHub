@@ -2,6 +2,9 @@
 
 namespace ContentHub.Domain.Entities;
 
+/// <summary>
+/// Represents a tag assigned to blog posts.
+/// </summary>
 public class Tag : BaseAuditableEntity
 {
     private readonly List<Post> _posts = new();
@@ -18,7 +21,6 @@ public class Tag : BaseAuditableEntity
 
     public void Rename(string name)
     {
-        Name = name;
-        MarkAsModified();
+        Name = name;        
     }
 }
