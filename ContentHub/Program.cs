@@ -1,15 +1,19 @@
 using ContentHub.Api.Extensions;
 using ContentHub.Infrastructure.Identity;
 using ContentHub.Infrastructure.Options;
+using Microsoft.OpenApi.Models;
+//using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
+//builder.Services.AddOpenApi();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerService();
 
 //-----------------------------------------
 
@@ -29,7 +33,7 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    //app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
@@ -45,7 +49,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 //-----------------------------------------
-using(var scope = app.Services.CreateScope())
+using (var scope = app.Services.CreateScope())
 {
     var seeder = scope.ServiceProvider.GetRequiredService<IdentityDataSeeder>();
 

@@ -1,4 +1,5 @@
-﻿using ContentHub.Application.Authorization;
+﻿using ContentHub.Api.Authorization;
+using ContentHub.Application.Authorization;
 using ContentHub.Application.DTOs.Posts;
 using ContentHub.Application.Features.Posts.Commands.CreatePost;
 using ContentHub.Application.Features.Posts.Commands.DeletePost;
@@ -45,13 +46,15 @@ namespace ContentHub.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IReadOnlyCollection<PostDto>>> GetAll(CancellationToken cancellationToken)
         {
-            var posts = await _sender.Send(new GetAllPostsQuery(),cancellationToken);
-            return Ok(posts);        
+            var posts = await _sender.Send(new GetAllPostsQuery(), cancellationToken);
+            return Ok(posts);
         }
 
 
         //[Authorize(Roles = Roles.Admin + "," + Roles.Author)]
-        [Authorize(Policy = Policies.CreatePosts)]
+        //[Authorize(Policy = Policies.CreatePosts)]
+        //[Authorize(Policy = PermissionNames.Posts.Create)]
+        [HasPermission(PermissionNames.Posts.Create)]
         [HttpPost]
         public async Task<ActionResult<Guid>> Create(
             CreatePostCommand command, CancellationToken cancellationToken)
@@ -62,7 +65,8 @@ namespace ContentHub.Api.Controllers
 
 
         //[Authorize(Roles = Roles.Author + "," + Roles.Admin)]  //Or
-        [Authorize(Policy = Policies.AuthorOrAdmin)]
+        //[Authorize(Policy = Policies.AuthorOrAdmin)]
+        [HasPermission(PermissionNames.Posts.Update)]
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(
             Guid id,
@@ -79,16 +83,14 @@ namespace ContentHub.Api.Controllers
 
 
 
-        [Authorize(Roles = Roles.Admin)]
+        //[Authorize(Roles = Roles.Admin)]
+        [HasPermission(PermissionNames.Posts.Update)]
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
-            //await _sender.Send(new DeletePostCommand(id), cancellationToken);
+            await _sender.Send(new DeletePostCommand(id), cancellationToken);
 
-            //return NoContent();
-
-            var header = Request.Headers.Authorization.ToString();
-            return Ok(header);
+            return NoContent();           
         }
     }
 }

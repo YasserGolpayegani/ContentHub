@@ -1,4 +1,5 @@
 ﻿using ContentHub.Application.Authentication;
+using ContentHub.Application.Authorization;
 using ContentHub.Application.Interfaces.Authentication;
 using ContentHub.Domain.Identity;
 using ContentHub.Infrastructure.Options;
@@ -25,13 +26,13 @@ public sealed class JwtService : IJwtService
     public JwtTokenResult GenerateToken(AppUser user, IEnumerable<string> roles)
     {
         ArgumentNullException.ThrowIfNull(user);
-        
+
         var now = DateTime.UtcNow;
-        
+
         var expireAtUtc = now.AddMinutes(_jwtOptions.ExpirationInMinutes);
-        
+
         var claims = CreateClaims(user, roles);
-       
+
         var signingCredentials = CreateSigningCredentials();
 
         var token = new JwtSecurityToken(
@@ -52,7 +53,7 @@ public sealed class JwtService : IJwtService
     {
         var claims = new List<Claim>
         {
-            new (JwtRegisteredClaimNames.Sub,user.Id.ToString()),
+            new(JwtRegisteredClaimNames.Sub,user.Id.ToString()),
 
             new(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
 
@@ -69,6 +70,15 @@ public sealed class JwtService : IJwtService
         {
             claims.Add(new Claim(ClaimTypes.Role, role));
         }
+
+        var permissions = RolePermissionProvider.GetPermission(roles);
+
+        foreach (string permission in permissions)
+        {
+            claims.Add(new Claim(CustomClaimTypes.Permission, permission));
+        }
+
+
         return claims;
     }
 

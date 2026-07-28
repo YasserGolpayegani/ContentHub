@@ -1,4 +1,5 @@
-﻿using ContentHub.Application.Authorization;
+﻿using ContentHub.Api.Authorization;
+using ContentHub.Api.Authorization.Handlers;
 using ContentHub.Application.Behaviors;
 using ContentHub.Application.Features.Posts.Commands.CreatePost;
 using ContentHub.Application.Interfaces.Authentication;
@@ -6,7 +7,6 @@ using ContentHub.Application.Interfaces.Categories;
 using ContentHub.Application.Interfaces.Comments;
 using ContentHub.Application.Interfaces.Posts;
 using ContentHub.Application.Interfaces.Tags;
-using ContentHub.Application.Validators;
 using ContentHub.Domain.Identity;
 using ContentHub.Infrastructure.Options;
 using ContentHub.Infrastructure.Services;
@@ -18,13 +18,17 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Reflection;
+using Microsoft.OpenApi.Models;
+
+//using Microsoft.OpenApi;
 using System.Text;
+
 
 namespace ContentHub.Api.Extensions;
 
 public static class ServiceCollectionExtensions
 {
+
     public static IServiceCollection AddPersistence(
         this IServiceCollection services,
         IConfiguration configuration)
@@ -38,6 +42,42 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
+    public static IServiceCollection AddSwaggerService(this IServiceCollection services)
+    {
+        services.AddSwaggerGen(options =>
+        {
+            options.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "ContentHub API",
+                Version = "v1"
+            });
+
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Description = "Enter JWT token only."
+            });
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    Array.Empty<string>()
+                }
+            });
+        });
+        return services;
+    }
 
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
@@ -118,38 +158,40 @@ public static class ServiceCollectionExtensions
         });
 
 
-        services.AddAuthorization(options =>
-        {
-            options.AddPolicy(
-                Policies.AdminOnly,
-                policy => policy.RequireRole(Roles.Admin));
+        services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
-            options.AddPolicy(
-                Policies.AuthorOrAdmin,
-                policy => policy.RequireRole(Roles.Admin, Roles.Author));
+        services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+
+        //services.AddAuthorization(options =>
+        //{
+        //    options.AddPolicy(Policies.AdminOnly, policy => policy.RequireRole(Roles.Admin));
+
+        //    options.AddPolicy(
+        //        Policies.AuthorOrAdmin,
+        //        policy => policy.RequireRole(Roles.Admin, Roles.Author));
 
 
 
-            options.AddPolicy(
-                 Policies.ViewPosts,
-                 policy => policy.RequireClaim("permission", Permissions.Posts.View));
+        //    options.AddPolicy(
+        //         Policies.ViewPosts,
+        //         policy => policy.RequireClaim("permission", PermissionNames.Posts.Read));
 
-            options.AddPolicy(
-                Policies.CreatePosts,
-                policy => policy.RequireClaim("permission", Permissions.Posts.Create));
+        //    options.AddPolicy(
+        //        Policies.CreatePosts,
+        //        policy => policy.RequireClaim("permission", PermissionNames.Posts.Create));
 
-            options.AddPolicy(
-                Policies.UpdatePosts,
-                policy => policy.RequireClaim("permission", Permissions.Posts.Update));
+        //    options.AddPolicy(
+        //        Policies.UpdatePosts,
+        //        policy => policy.RequireClaim("permission", PermissionNames.Posts.Update));
 
-            options.AddPolicy(
-                Policies.DeletePosts,
-                policy => policy.RequireClaim("permission", Permissions.Posts.Delete));
+        //    options.AddPolicy(
+        //        Policies.DeletePosts,
+        //        policy => policy.RequireClaim("permission", PermissionNames.Posts.Delete));
 
-            options.AddPolicy(
-                Policies.PublishPosts,
-                policy => policy.RequireClaim("permission", Permissions.Posts.Publish));
-        });
+        //    options.AddPolicy(
+        //        Policies.PublishPosts,
+        //        policy => policy.RequireClaim("permission", PermissionNames.Posts.Publish));
+        //});
 
         services.AddScoped<IJwtService, JwtService>();
 
