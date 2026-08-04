@@ -2,7 +2,9 @@
 using ContentHub.Application.DTOs.Comments;
 using ContentHub.Application.DTOs.Posts;
 using ContentHub.Application.DTOs.Tags;
+using ContentHub.Application.DTOs.Users;
 using ContentHub.Domain.Entities;
+using ContentHub.Domain.Identity;
 
 namespace ContentHub.Application.Mapping;
 
@@ -49,4 +51,5 @@ public static class MapToDto
             PostId = comment.PostId
         };
     }
+    
 }

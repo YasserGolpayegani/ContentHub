@@ -37,6 +37,8 @@ public sealed class GlobalExceptionMiddleware
             UnauthorizedException => (StatusCodes.Status401Unauthorized, "Unauthorized"),
 
             ValidationException => (StatusCodes.Status400BadRequest, "Bad Request"),
+            
+            IdentityOperationException => (StatusCodes.Status400BadRequest, "Identity Operation Failed"),
 
             NotFoundException => (StatusCodes.Status404NotFound, "Not Found"),
 
@@ -55,6 +57,16 @@ public sealed class GlobalExceptionMiddleware
 
         if (exception is ValidationException validationException)
             problemDetails.Extensions["errors"] = validationException.Errors;
+
+        if (exception is IdentityOperationException identityException)
+        {
+            problemDetails.Extensions["errors"] = identityException.Errors
+                .Select(error => new
+                {
+                    error.Code,
+                    error.Description
+                });
+        }
 
         await context.Response.WriteAsJsonAsync(problemDetails);
 

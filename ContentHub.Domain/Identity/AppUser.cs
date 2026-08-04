@@ -29,11 +29,16 @@ public class AppUser : IdentityUser<Guid>
     public IReadOnlyCollection<RefreshToken> RefreshTokens => _refreshTokens.AsReadOnly();
 
 
+    /// <summary>
+    /// Activates the user account.
+    /// </summary>
     public void Deactivate()
     {
         IsActive = false;
     }
 
+    /// <summary>
+    /// Deactivates the user account.
+    /// </summary>
     public void Activate() => IsActive = true;
-
 }

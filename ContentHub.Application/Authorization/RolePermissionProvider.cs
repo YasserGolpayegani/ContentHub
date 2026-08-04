@@ -31,7 +31,10 @@ public static class RolePermissionProvider
             PermissionNames.Tags.Update,
             PermissionNames.Tags.Delete,
 
-            
+            PermissionNames.Users.Read,
+            PermissionNames.Users.Update,
+            PermissionNames.Users.ChangeRole,
+            PermissionNames.Users.Activate            
         },
 
         [Roles.Author] = new HashSet<string>()
