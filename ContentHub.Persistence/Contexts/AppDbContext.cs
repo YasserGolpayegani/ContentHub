@@ -19,6 +19,7 @@ public class AppDbContext:IdentityDbContext<AppUser,IdentityRole<Guid>,Guid>
     public DbSet<Comment> Comments => Set<Comment>();
     public DbSet<Tag> Tags => Set<Tag>();
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+    public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,7 +1,9 @@
 ﻿using ContentHub.Api.Authorization;
 using ContentHub.Api.Authorization.Handlers;
+using ContentHub.Api.Services;
 using ContentHub.Application.Behaviors;
 using ContentHub.Application.Features.Posts.Commands.CreatePost;
+using ContentHub.Application.Interfaces.Audit;
 using ContentHub.Application.Interfaces.Authentication;
 using ContentHub.Application.Interfaces.Categories;
 using ContentHub.Application.Interfaces.Comments;
@@ -38,6 +40,10 @@ public static class ServiceCollectionExtensions
             options.UseSqlServer(
                 configuration.GetConnectionString("DefaultConnection"));
         });
+
+        services.AddHttpContextAccessor();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddScoped<IAuditRepository, AuditRepository>();
 
         return services;
     }

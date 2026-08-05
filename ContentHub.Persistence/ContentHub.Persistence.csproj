@@ -24,4 +24,8 @@
     <ProjectReference Include="..\ContentHub.Domain\ContentHub.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>

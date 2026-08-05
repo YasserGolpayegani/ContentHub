@@ -57,13 +57,13 @@ public sealed class JwtService : IJwtService
 
             new(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
 
-            new(JwtRegisteredClaimNames .UniqueName,user.UserName??string.Empty),
+            new(JwtRegisteredClaimNames.UniqueName,user.UserName??string.Empty),
 
             new(JwtRegisteredClaimNames.Email,user.Email??string.Empty),
 
             new(JwtRegisteredClaimNames.NameId,user.Id.ToString()),
 
-            new(ClaimTypes.Name,user.UserName??string.Empty)
+            new(ClaimTypes.Name,user.UserName??string.Empty),            
         };
 
         foreach (var role in roles)
