@@ -1,11 +1,12 @@
-﻿using ContentHub.Application.DTOs.Posts;
-using ContentHub.Application.Interfaces.Posts;
+﻿using ContentHub.Application.Abstractions.Messaging;
+using ContentHub.Application.Abstractions.Persistence;
+using ContentHub.Application.DTOs.Posts;
 using ContentHub.Application.Mapping;
 using MediatR;
 
 namespace ContentHub.Application.Features.Posts.Queries.GetAllPostsQuery;
 
-public sealed class GetAllPostsQueryHandler: IRequestHandler<GetAllPostsQuery, IReadOnlyList<PostDto>>
+public sealed class GetAllPostsQueryHandler: IQueryHandler<GetAllPostsQuery, IReadOnlyList<PostDto>>
 {
     private readonly IPostRepository _postRepository;
 

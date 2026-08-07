@@ -1,19 +1,17 @@
 ﻿using ContentHub.Api.Authorization;
 using ContentHub.Api.Authorization.Handlers;
 using ContentHub.Api.Services;
+using ContentHub.Application.Abstractions.Authentication;
+using ContentHub.Application.Abstractions.Persistence;
 using ContentHub.Application.Behaviors;
 using ContentHub.Application.Features.Posts.Commands.CreatePost;
-using ContentHub.Application.Interfaces.Audit;
-using ContentHub.Application.Interfaces.Authentication;
-using ContentHub.Application.Interfaces.Categories;
-using ContentHub.Application.Interfaces.Comments;
-using ContentHub.Application.Interfaces.Posts;
-using ContentHub.Application.Interfaces.Tags;
+using ContentHub.Application.Interfaces.Persistence;
 using ContentHub.Domain.Identity;
 using ContentHub.Infrastructure.Options;
 using ContentHub.Infrastructure.Services;
 using ContentHub.Persistence.Contexts;
 using ContentHub.Persistence.Repositories;
+using ContentHub.Persistence.UnitOfWork;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -44,6 +42,7 @@ public static class ServiceCollectionExtensions
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IAuditRepository, AuditRepository>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
     }
@@ -95,6 +94,8 @@ public static class ServiceCollectionExtensions
             config.RegisterServicesFromAssemblyContaining<CreatePostCommand>();
 
             config.AddOpenBehavior(typeof(ValidationBehavior<,>));
+            config.AddOpenBehavior(typeof(TransactionBehavior<,>));
+            config.AddOpenBehavior(typeof(AuditBehavior<,>));
         });
 
         services.AddValidatorsFromAssemblyContaining<CreatePostCommandValidator>();

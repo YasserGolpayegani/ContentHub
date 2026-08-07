@@ -1,11 +1,12 @@
-﻿using ContentHub.Application.Exceptions;
+﻿using ContentHub.Application.Abstractions.Messaging;
+using ContentHub.Application.Exceptions;
 using ContentHub.Domain.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 namespace ContentHub.Application.Features.Users.Commands.UpdateUserStatusCommand;
 
-public sealed class UpdateUserStatusCommandHandler : IRequestHandler<UpdateUserStatusCommand>
+public sealed class UpdateUserStatusCommandHandler : ICommandHandler<UpdateUserStatusCommand>
 {
     private readonly UserManager<AppUser> _userManager;
 

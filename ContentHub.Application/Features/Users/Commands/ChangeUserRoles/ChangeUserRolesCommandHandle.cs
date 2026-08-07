@@ -1,4 +1,5 @@
-﻿using ContentHub.Application.Exceptions;
+﻿using ContentHub.Application.Abstractions.Messaging;
+using ContentHub.Application.Exceptions;
 using ContentHub.Domain.Identity;
 using FluentValidation.Results;
 using MediatR;
@@ -10,7 +11,7 @@ namespace ContentHub.Application.Features.Users.Commands.ChangeUserRoles;
 // This command performs multiple identity operations.
 // It will be wrapped by TransactionBehavior in a future session
 // to guarantee atomicity.
-public sealed class ChangeUserRolesCommandHandle : IRequestHandler<ChangeUserRolesCommand>
+public sealed class ChangeUserRolesCommandHandle : ICommandHandler<ChangeUserRolesCommand>
 {
     private readonly UserManager<AppUser> _userManager;
     private readonly RoleManager<IdentityRole<Guid>> _roleManager;

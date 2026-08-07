@@ -1,6 +1,7 @@
-﻿using ContentHub.Application.Interfaces.Audit;
+﻿using ContentHub.Application.Abstractions.Persistence;
 using ContentHub.Domain.Identity;
 using ContentHub.Persistence.Contexts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,11 +19,8 @@ public sealed class AuditRepository : IAuditRepository
 
     public async Task AddAsync(AuditLog auditLog, CancellationToken cancellationToken = default)
     {
-        await _context.AuditLogs.AddAsync(auditLog, cancellationToken);
-    }
+        await _context.AuditLogs.AddAsync(auditLog, cancellationToken);        
+    } 
 
-    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
-    {
-        await _context.SaveChangesAsync(cancellationToken);
-    }
+    
 }

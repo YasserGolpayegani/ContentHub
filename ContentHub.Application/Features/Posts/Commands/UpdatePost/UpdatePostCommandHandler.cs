@@ -1,10 +1,11 @@
-﻿using ContentHub.Application.Exceptions;
-using ContentHub.Application.Interfaces.Posts;
+﻿using ContentHub.Application.Abstractions.Messaging;
+using ContentHub.Application.Abstractions.Persistence;
+using ContentHub.Application.Exceptions;
 using MediatR;
 
 namespace ContentHub.Application.Features.Posts.Commands.UpdatePost;
 
-public sealed class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand>
+public sealed class UpdatePostCommandHandler : ICommandHandler<UpdatePostCommand>
 {
     private readonly IPostRepository _postRepository;
 
@@ -24,7 +25,8 @@ public sealed class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand
 
         _postRepository.Update(post);
 
-        await _postRepository.SaveChangesAsync(cancellationToken);
+        //Saving perform on UnitOfWork
+        //await _postRepository.SaveChangesAsync(cancellationToken);
     }
 }
 

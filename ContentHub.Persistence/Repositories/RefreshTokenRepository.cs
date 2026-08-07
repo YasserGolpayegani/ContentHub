@@ -1,4 +1,4 @@
-﻿using ContentHub.Application.Interfaces.Authentication;
+﻿using ContentHub.Application.Abstractions.Persistence;
 using ContentHub.Domain.Entities;
 using ContentHub.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -40,10 +40,5 @@ public class RefreshTokenRepository : IRefreshTokenRepository
     public void Update(RefreshToken refreshToken)
     {
         _context.RefreshTokens.Update(refreshToken);
-    }
-
-    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
-    {
-        await _context.SaveChangesAsync(cancellationToken);
     }
 }

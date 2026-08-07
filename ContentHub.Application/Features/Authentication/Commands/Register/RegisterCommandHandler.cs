@@ -1,4 +1,5 @@
-﻿using ContentHub.Application.Authorization;
+﻿using ContentHub.Application.Abstractions.Messaging;
+using ContentHub.Application.Authorization;
 using ContentHub.Application.Exceptions;
 using ContentHub.Domain.Identity;
 using MediatR;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace ContentHub.Application.Features.Authentication.Commands.Register;
 
-public sealed class RegisterCommandHandler : IRequestHandler<RegisterCommand, Guid>
+public sealed class RegisterCommandHandler : ICommandHandler<RegisterCommand, Guid>
 {
     private readonly UserManager<AppUser> _userManager;
 

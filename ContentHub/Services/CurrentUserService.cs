@@ -1,4 +1,4 @@
-﻿using ContentHub.Application.Interfaces.Authentication;
+﻿using ContentHub.Application.Abstractions.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;

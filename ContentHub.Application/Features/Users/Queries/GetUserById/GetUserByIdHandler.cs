@@ -1,4 +1,5 @@
-﻿using ContentHub.Application.DTOs.Users;
+﻿using ContentHub.Application.Abstractions.Messaging;
+using ContentHub.Application.DTOs.Users;
 using ContentHub.Application.Exceptions;
 using ContentHub.Domain.Identity;
 using MediatR;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace ContentHub.Application.Features.Users.Queries.GetUserById;
 
-public sealed class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, UserDto>
+public sealed class GetUserByIdHandler : IQueryHandler<GetUserByIdQuery, UserDto>
 {
     private readonly UserManager<AppUser> _userManager;
 

@@ -1,5 +1,6 @@
-﻿using ContentHub.Application.Features.Posts.Commands;
-using ContentHub.Application.Interfaces.Posts;
+﻿using ContentHub.Application.Abstractions.Messaging;
+using ContentHub.Application.Abstractions.Persistence;
+using ContentHub.Application.Features.Posts.Commands;
 using ContentHub.Domain.Entities;
 using MediatR;
 using System;
@@ -9,7 +10,7 @@ using System.Text;
 
 namespace ContentHub.Application.Features.Posts.Commands.CreatePost;
 
-public sealed class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Guid>
+public sealed class CreatePostCommandHandler : ICommandHandler<CreatePostCommand, Guid>
 {
     private readonly IPostRepository _postRepository;
 
@@ -24,7 +25,8 @@ public sealed class CreatePostCommandHandler : IRequestHandler<CreatePostCommand
 
         await _postRepository.AddAsync(post, cancellationToken);
 
-        await _postRepository.SaveChangesAsync(cancellationToken);
+        //Saving perform on UnitOfWork
+        //await _postRepository.SaveChangesAsync(cancellationToken);
 
         return post.Id;
     }

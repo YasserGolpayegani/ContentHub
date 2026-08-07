@@ -1,4 +1,8 @@
-﻿using MediatR;
+﻿using ContentHub.Application.Abstractions.Messaging;
+using ContentHub.Application.Common;
+using ContentHub.Domain.Entities;
+using ContentHub.Domain.Identity;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,5 +14,11 @@ public sealed record UpdatePostCommand(
     string Title,
     string Content,
     string Slug,
-    Guid CategoryId) : IRequest;
+    Guid CategoryId) : ICommand,IAuditableCommand
+{
+    public string Action => AuditActions.Update;
 
+    public string EntityName => nameof(Post);
+
+    public string? EntityId => Id.ToString();
+}

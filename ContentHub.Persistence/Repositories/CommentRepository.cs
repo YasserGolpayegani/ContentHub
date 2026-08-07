@@ -1,4 +1,4 @@
-﻿using ContentHub.Application.Interfaces.Comments;
+﻿using ContentHub.Application.Abstractions.Persistence;
 using ContentHub.Domain.Entities;
 using ContentHub.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -28,10 +28,5 @@ public class CommentRepository : ICommentRepository
     public async Task AddAsync(Comment comment, CancellationToken cancellationToken = default)
     {
         await _context.Comments.AddAsync(comment);
-    }
-
-    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
-    {
-        await _context.SaveChangesAsync();
     }
 }

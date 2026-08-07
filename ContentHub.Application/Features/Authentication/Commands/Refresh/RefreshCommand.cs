@@ -1,4 +1,5 @@
-﻿using ContentHub.Application.Features.Authentication.Commands.Login;
+﻿using ContentHub.Application.Abstractions.Messaging;
+using ContentHub.Application.Features.Authentication.Commands.Login;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -7,4 +8,4 @@ using System.Text;
 
 namespace ContentHub.Application.Features.Authentication.Commands.Refresh;
 
-public sealed record RefreshCommand(string RefreshToken) : IRequest<LoginResponse>;
+public sealed record RefreshCommand(string RefreshToken) : ICommand<LoginResponse>;

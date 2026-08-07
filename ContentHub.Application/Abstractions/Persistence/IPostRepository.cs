@@ -1,7 +1,7 @@
 ﻿using ContentHub.Domain.Entities;
 
 
-namespace ContentHub.Application.Interfaces.Posts;
+namespace ContentHub.Application.Abstractions.Persistence;
 
 public interface IPostRepository
 {
@@ -9,7 +9,5 @@ public interface IPostRepository
     Task<Post?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
     Task AddAsync(Post post, CancellationToken cancellationToken = default);
     void Update(Post post);
-    void Delete(Post post);
-    Task SaveChangesAsync(CancellationToken cancellationToken = default);
-
+    void Delete(Post post); 
 }

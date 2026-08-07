@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Text;
 
-namespace ContentHub.Application.Interfaces.Authentication;
+namespace ContentHub.Application.Abstractions.Authentication;
 
 public interface IJwtService
 {

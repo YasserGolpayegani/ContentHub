@@ -1,4 +1,5 @@
-﻿using ContentHub.Application.DTOs.Users;
+﻿using ContentHub.Application.Abstractions.Messaging;
+using ContentHub.Application.DTOs.Users;
 using ContentHub.Domain.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -6,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ContentHub.Application.Features.Users.Queries.GetUsers;
 
-public sealed class GetUserQueryHandler : IRequestHandler<GetUsersQuery, IReadOnlyCollection<UserDto>>
+public sealed class GetUserQueryHandler : IQueryHandler<GetUsersQuery, IReadOnlyCollection<UserDto>>
 {
     private readonly UserManager<AppUser> _userManager;
 

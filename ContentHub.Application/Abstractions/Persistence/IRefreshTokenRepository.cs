@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ContentHub.Application.Interfaces.Authentication;
+namespace ContentHub.Application.Abstractions.Persistence;
 
 public interface IRefreshTokenRepository
 {
@@ -13,7 +13,5 @@ public interface IRefreshTokenRepository
 
     Task AddAsync(RefreshToken refreshToken, CancellationToken cancellationToken = default);
 
-    void Update(RefreshToken refreshToken);
-
-    Task SaveChangesAsync(CancellationToken cancellationToken = default);
+    void Update(RefreshToken refreshToken);    
 }

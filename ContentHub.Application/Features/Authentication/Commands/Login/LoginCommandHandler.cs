@@ -1,12 +1,14 @@
-﻿using ContentHub.Application.Exceptions;
-using ContentHub.Application.Interfaces.Authentication;
+﻿using ContentHub.Application.Abstractions.Authentication;
+using ContentHub.Application.Abstractions.Messaging;
+using ContentHub.Application.Abstractions.Persistence;
+using ContentHub.Application.Exceptions;
 using ContentHub.Domain.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 namespace ContentHub.Application.Features.Authentication.Commands.Login;
 
-public sealed class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
+public sealed class LoginCommandHandler : ICommandHandler<LoginCommand, LoginResponse>
 {
     private readonly UserManager<AppUser> _userManager;
     private readonly IJwtService _jwtService;
@@ -47,9 +49,7 @@ public sealed class LoginCommandHandler : IRequestHandler<LoginCommand, LoginRes
         var refreshToken = _refreshTokenService.Generate(user);
 
         await _refreshTokenRepository.AddAsync(refreshToken, cancellationToken);
-
-        await _refreshTokenRepository.SaveChangesAsync(cancellationToken);
-
+        
 
         return new LoginResponse(
             jwtToken.Token,

@@ -1,4 +1,4 @@
-﻿using ContentHub.Application.Interfaces.Posts;
+﻿using ContentHub.Application.Abstractions.Persistence;
 using ContentHub.Domain.Entities;
 using ContentHub.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -40,11 +40,5 @@ public class PostRepository : IPostRepository
     public void Delete(Post post)
     {
         _context.Posts.Remove(post);       
-    }
-
-    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
-    {
-        await _context.SaveChangesAsync(cancellationToken);
-    }
-
+    }   
 }

@@ -1,10 +1,12 @@
-﻿using ContentHub.Application.Exceptions;
-using ContentHub.Application.Interfaces.Authentication;
+﻿using ContentHub.Application.Abstractions.Authentication;
+using ContentHub.Application.Abstractions.Messaging;
+using ContentHub.Application.Abstractions.Persistence;
+using ContentHub.Application.Exceptions;
 using MediatR;
 
 namespace ContentHub.Application.Features.Authentication.Commands.Logout;
 
-public sealed class LogoutCommandHandler : IRequestHandler<LogoutCommand>
+public sealed class LogoutCommandHandler : ICommandHandler<LogoutCommand>
 {
     private readonly IRefreshTokenRepository _refreshTokenRepository;
     private readonly IRefreshTokenService _refreshTokenService;
@@ -29,8 +31,6 @@ public sealed class LogoutCommandHandler : IRequestHandler<LogoutCommand>
 
         refreshToken.Revoke();
 
-        _refreshTokenRepository.Update(refreshToken);
-
-        await _refreshTokenRepository.SaveChangesAsync(cancellationToken);
+        _refreshTokenRepository.Update(refreshToken);        
     }
 }

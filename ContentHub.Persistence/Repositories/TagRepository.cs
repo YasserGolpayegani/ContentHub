@@ -1,4 +1,4 @@
-﻿using ContentHub.Application.Interfaces.Tags;
+﻿using ContentHub.Application.Abstractions.Persistence;
 using ContentHub.Domain.Entities;
 using ContentHub.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -27,10 +27,5 @@ public class TagRepository : ITagRepository
     public async Task AddAsync(Tag tag, CancellationToken cancellationToken = default)
     {
         await _context.Tags.AddAsync(tag);
-    }
-
-    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
-    {
-        await _context.SaveChangesAsync();
     }
 }

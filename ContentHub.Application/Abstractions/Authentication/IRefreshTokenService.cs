@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ContentHub.Application.Interfaces.Authentication;
+namespace ContentHub.Application.Abstractions.Authentication;
 
 public interface IRefreshTokenService
 {

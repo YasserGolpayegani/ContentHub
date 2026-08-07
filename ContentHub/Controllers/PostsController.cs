@@ -6,10 +6,8 @@ using ContentHub.Application.Features.Posts.Commands.DeletePost;
 using ContentHub.Application.Features.Posts.Commands.UpdatePost;
 using ContentHub.Application.Features.Posts.Queries.GetAllPostsQuery;
 using ContentHub.Application.Features.Posts.Queries.GetPostById;
-using ContentHub.Application.Interfaces.Posts;
-using ContentHub.Domain.Identity;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

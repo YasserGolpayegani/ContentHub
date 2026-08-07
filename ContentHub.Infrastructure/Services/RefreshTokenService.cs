@@ -1,4 +1,4 @@
-﻿using ContentHub.Application.Interfaces.Authentication;
+﻿using ContentHub.Application.Abstractions.Authentication;
 using ContentHub.Domain.Entities;
 using ContentHub.Domain.Identity;
 using System;
