@@ -7,10 +7,5 @@ namespace ContentHub.Application.Abstractions.Persistence;
 
 public interface IAuditRepository
 {
-    //IQueryable<AuditLog> GetAll();
-
     Task AddAsync(AuditLog auditLog, CancellationToken cancellationToken = default);
-
-    //SaveChanges will ads in UnitOfWork
-    //Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }

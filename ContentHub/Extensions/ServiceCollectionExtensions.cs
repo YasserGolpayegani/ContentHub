@@ -10,6 +10,7 @@ using ContentHub.Domain.Identity;
 using ContentHub.Infrastructure.Options;
 using ContentHub.Infrastructure.Services;
 using ContentHub.Persistence.Contexts;
+using ContentHub.Persistence.Interceptors;
 using ContentHub.Persistence.Repositories;
 using ContentHub.Persistence.UnitOfWork;
 using FluentValidation;
@@ -33,16 +34,22 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddDbContext<AppDbContext>(options =>
+        services.AddDbContext<AppDbContext>((serviceProvider, options) =>
         {
             options.UseSqlServer(
                 configuration.GetConnectionString("DefaultConnection"));
+
+            var interceptor = serviceProvider
+                .GetRequiredService<AuditSaveChangesInterceptor>();
+
+            options.AddInterceptors(interceptor);
         });
 
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IAuditRepository, AuditRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<AuditSaveChangesInterceptor>();
 
         return services;
     }

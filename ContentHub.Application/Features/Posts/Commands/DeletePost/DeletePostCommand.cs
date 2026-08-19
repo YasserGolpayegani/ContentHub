@@ -8,10 +8,4 @@ using System.Text;
 
 namespace ContentHub.Application.Features.Posts.Commands.DeletePost;
 
-public sealed record DeletePostCommand(Guid id)
-    : ICommand, IAuditableCommand
-{
-    public string Action => AuditActions.Delete;
-    public string EntityName => nameof(Post);
-    public string? EntityId => id.ToString();
-}
+public sealed record DeletePostCommand(Guid id) : ICommand;

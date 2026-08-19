@@ -2,6 +2,7 @@ using ContentHub.Api.Extensions;
 using ContentHub.Infrastructure.Identity;
 using ContentHub.Infrastructure.Options;
 using Microsoft.OpenApi.Models;
+using Serilog;
 //using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +29,12 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddScoped<IdentityDataSeeder>();
 //-----------------------------------------
 
+builder.Host.UseSerilog((context, configuration) =>
+configuration.ReadFrom.Configuration(context.Configuration)
+);
+
+builder.Services.AddHealthChecks()
+    .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!, name: "sql-server");
 
 var app = builder.Build();
 
@@ -40,11 +47,17 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 //-----------------------------------------
+app.UseCorrelationId();
+//-----------------------------------------
 app.UseGlobalExceptionHandling();
 //-----------------------------------------
 app.UseAuthentication();
-
+//-----------------------------------------
+app.UseLoggingContext();
+app.UseSerilogRequestLogging();
+//-----------------------------------------
 app.UseAuthorization();
+
 
 app.MapControllers();
 
@@ -56,6 +69,8 @@ using (var scope = app.Services.CreateScope())
     await seeder.SeedAsync();
 }
 
+//-----------------------------------------
+app.MapHealthChecks("/health");
 //-----------------------------------------
 
 app.Run();

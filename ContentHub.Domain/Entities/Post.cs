@@ -1,8 +1,9 @@
-﻿using ContentHub.Domain.Common;
+﻿using ContentHub.Domain.Abstractions;
+using ContentHub.Domain.Common;
 
 namespace ContentHub.Domain.Entities;
 
-public sealed class Post : BaseAuditableEntity
+public sealed class Post : BaseAuditableEntity, IAuditableEntity
 {
     public string Title { get; private set; } = string.Empty;
     public string Content { get; private set; } = string.Empty;

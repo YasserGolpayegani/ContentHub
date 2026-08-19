@@ -13,11 +13,4 @@ public sealed record CreatePostCommand(
     string Title,
     string Content,
     string Slug,
-    Guid CategoryId) : ICommand<Guid>,IAuditableCommand
-{
-    public string Action => AuditActions.Create;
-
-    public string EntityName => nameof(Post);
-
-    public string? EntityId => null;
-}
+    Guid CategoryId) : ICommand<Guid>;

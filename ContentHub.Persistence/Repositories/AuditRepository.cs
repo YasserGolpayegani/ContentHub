@@ -20,7 +20,5 @@ public sealed class AuditRepository : IAuditRepository
     public async Task AddAsync(AuditLog auditLog, CancellationToken cancellationToken = default)
     {
         await _context.AuditLogs.AddAsync(auditLog, cancellationToken);        
-    } 
-
-    
+    }     
 }

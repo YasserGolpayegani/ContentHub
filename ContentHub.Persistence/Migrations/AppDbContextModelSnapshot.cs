@@ -322,6 +322,12 @@ namespace ContentHub.Persistence.Migrations
                     b.Property<bool>("IsSuccessful")
                         .HasColumnType("bit");
 
+                    b.Property<string>("NewValues")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OldValues")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("TimestampUtc")
                         .HasColumnType("datetime2");
 

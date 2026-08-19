@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ContentHub.Persistence.Configurations;
 
-public sealed class AuditLogConfiguration:IEntityTypeConfiguration<AuditLog>
+public sealed class AuditLogConfiguration : IEntityTypeConfiguration<AuditLog>
 {
     public void Configure(EntityTypeBuilder<AuditLog> builder)
     {
@@ -35,12 +35,17 @@ public sealed class AuditLogConfiguration:IEntityTypeConfiguration<AuditLog>
         builder.Property(x => x.IpAddress)
             .HasMaxLength(45);
 
-        builder.Property(x=>x.TimestampUtc)
+        builder.Property(x => x.TimestampUtc)
             .IsRequired();
 
         builder.Property(x => x.IsSuccessful)
             .IsRequired();
 
+        builder.Property(x => x.OldValues)
+            .HasColumnType("nvarchar(max)");
+
+        builder.Property(x => x.NewValues)
+            .HasColumnType("nvarchar(max)");
 
         builder.HasIndex(x => x.TimestampUtc);
         builder.HasIndex(x => x.UserId);

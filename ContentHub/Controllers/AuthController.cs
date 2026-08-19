@@ -14,11 +14,11 @@ namespace ContentHub.Api.Controllers
     [ApiController]
     public sealed class AuthController : ControllerBase
     {
-        private readonly ISender _sender;
+        private readonly ISender _sender;        
 
         public AuthController(ISender sender)
         {
-            _sender = sender;
+            _sender = sender;            
         }
 
         /// <summary>
@@ -64,12 +64,14 @@ namespace ContentHub.Api.Controllers
             return NoContent();
         }
 
+        
 
         [Authorize]
         [HttpGet("profile")]
         public IActionResult Profile()
         {
             var header = Request.Headers.Authorization.ToString();
+           
             return Ok(header);
             //return Ok(new { Message = "You are authenticated." });
         }

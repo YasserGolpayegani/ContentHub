@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using ContentHub.Domain.Abstractions;
 using ContentHub.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace ContentHub.Domain.Identity;
 
-public class AppUser : IdentityUser<Guid>
+public class AppUser : IdentityUser<Guid>, IAuditableEntity
 {
     private readonly List<RefreshToken> _refreshTokens = new();
 

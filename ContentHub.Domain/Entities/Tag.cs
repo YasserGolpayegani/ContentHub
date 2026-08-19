@@ -1,11 +1,12 @@
-﻿using ContentHub.Domain.Common;
+﻿using ContentHub.Domain.Abstractions;
+using ContentHub.Domain.Common;
 
 namespace ContentHub.Domain.Entities;
 
 /// <summary>
 /// Represents a tag assigned to blog posts.
 /// </summary>
-public class Tag : BaseAuditableEntity
+public class Tag : BaseAuditableEntity, IAuditableEntity
 {
     private readonly List<Post> _posts = new();
 

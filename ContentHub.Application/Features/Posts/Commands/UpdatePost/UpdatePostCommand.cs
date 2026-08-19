@@ -14,11 +14,4 @@ public sealed record UpdatePostCommand(
     string Title,
     string Content,
     string Slug,
-    Guid CategoryId) : ICommand,IAuditableCommand
-{
-    public string Action => AuditActions.Update;
-
-    public string EntityName => nameof(Post);
-
-    public string? EntityId => Id.ToString();
-}
+    Guid CategoryId) : ICommand;

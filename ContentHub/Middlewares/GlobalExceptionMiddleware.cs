@@ -1,6 +1,5 @@
 ﻿using ContentHub.Application.Exceptions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
 
 namespace ContentHub.Api.Middlewares;
 
@@ -21,24 +20,43 @@ public sealed class GlobalExceptionMiddleware
         {
             await _next(context);
         }
-
         catch (Exception exception)
         {
-            _logger.LogError(exception, "Unhandled exception occurred.");
+            LogException(exception);
 
             await HandleExceptionAsync(context, exception);
         }
     }
 
-    public static async Task HandleExceptionAsync(HttpContext context, Exception exception)
+    private void LogException(Exception exception)
+    {
+        switch (exception)
+        {
+            case UnauthorizedException:
+                _logger.LogWarning(exception, "Authentication failed.");
+                break;
+
+            case ValidationException:
+                _logger.LogWarning(exception, "Request validation failed.");
+                break;
+
+            case NotFoundException:
+                _logger.LogWarning(exception, "Requested resource was not found.");
+                break;
+
+            default:
+                _logger.LogError(exception, "An unhandled exception occurred.");
+                break;
+        }
+    }
+
+    private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
         var (statusCode, title) = exception switch
         {
             UnauthorizedException => (StatusCodes.Status401Unauthorized, "Unauthorized"),
 
             ValidationException => (StatusCodes.Status400BadRequest, "Bad Request"),
-            
-            IdentityOperationException => (StatusCodes.Status400BadRequest, "Identity Operation Failed"),
 
             NotFoundException => (StatusCodes.Status404NotFound, "Not Found"),
 
@@ -55,22 +73,6 @@ public sealed class GlobalExceptionMiddleware
             Instance = context.Request.Path
         };
 
-        if (exception is ValidationException validationException)
-            problemDetails.Extensions["errors"] = validationException.Errors;
-
-        if (exception is IdentityOperationException identityException)
-        {
-            problemDetails.Extensions["errors"] = identityException.Errors
-                .Select(error => new
-                {
-                    error.Code,
-                    error.Description
-                });
-        }
-
         await context.Response.WriteAsJsonAsync(problemDetails);
-
-        
     }
-
 }

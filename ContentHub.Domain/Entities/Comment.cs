@@ -1,11 +1,12 @@
-﻿using ContentHub.Domain.Common;
+﻿using ContentHub.Domain.Abstractions;
+using ContentHub.Domain.Common;
 
 namespace ContentHub.Domain.Entities;
 
 /// <summary>
 /// Represents a comment submitted for a blog post.
 /// </summary>
-public class Comment : BaseAuditableEntity
+public class Comment : BaseAuditableEntity, IAuditableEntity
 {
     private Comment() { }
 

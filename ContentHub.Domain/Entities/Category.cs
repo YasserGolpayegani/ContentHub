@@ -1,8 +1,9 @@
-﻿using ContentHub.Domain.Common;
+﻿using ContentHub.Domain.Abstractions;
+using ContentHub.Domain.Common;
 
 namespace ContentHub.Domain.Entities;
 
-public class Category : BaseAuditableEntity
+public class Category : BaseAuditableEntity, IAuditableEntity
 {
     private readonly List<Post> _posts = new();
 

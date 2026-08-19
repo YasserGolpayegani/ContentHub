@@ -6,6 +6,13 @@ namespace ContentHub.Api.Authorization.Handlers;
 
 public sealed class PermissionAuthorizationHandler : AuthorizationHandler<PermissionRequirement>
 {
+    private readonly ILogger<PermissionAuthorizationHandler> _logger;
+
+    public PermissionAuthorizationHandler(ILogger<PermissionAuthorizationHandler> logger)
+    {
+        _logger = logger;
+    }
+
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
     {
         if (context.User.Identity is not { IsAuthenticated: true })
@@ -17,7 +24,8 @@ public sealed class PermissionAuthorizationHandler : AuthorizationHandler<Permis
 
         if (hasPermission)
             context.Succeed(requirement);
-
+        else
+            _logger.LogWarning("Authorization failed. Required permission: {Permission}.", requirement.Permission);
         return Task.CompletedTask;
     }
 }

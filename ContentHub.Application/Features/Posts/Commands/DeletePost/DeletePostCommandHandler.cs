@@ -2,16 +2,18 @@
 using ContentHub.Application.Abstractions.Persistence;
 using ContentHub.Application.Exceptions;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace ContentHub.Application.Features.Posts.Commands.DeletePost;
 
 public sealed class DeletePostCommandHandler : ICommandHandler<DeletePostCommand>
 {
     private readonly IPostRepository _postRepository;
-
-    public DeletePostCommandHandler(IPostRepository postRepository)
+    private readonly ILogger<DeletePostCommandHandler> _logger;
+    public DeletePostCommandHandler(IPostRepository postRepository, ILogger<DeletePostCommandHandler> logger)
     {
         _postRepository = postRepository;
+        _logger = logger;
     }
 
     public async Task Handle(DeletePostCommand request, CancellationToken cancellationToken)
@@ -22,7 +24,7 @@ public sealed class DeletePostCommandHandler : ICommandHandler<DeletePostCommand
             throw new NotFoundException("Post was not found.");
 
         _postRepository.Delete(post);
-
+        _logger.LogInformation("The post {postId} is deleted", post.Id);
         //Saving perform on UnitOfWork
         //await _postRepository.SaveChangesAsync(cancellationToken);
     }

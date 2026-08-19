@@ -23,7 +23,9 @@ public sealed class AuditLog:BaseEntity
         DateTime timestampUtc,
         bool isSuccessful,
         string? failureReason,
-        string? ipAddress)
+        string? ipAddress,
+        string? oldValues=null,
+        string? newValues=null)
     {
         UserId = userId;
         UserName = userName;
@@ -34,6 +36,8 @@ public sealed class AuditLog:BaseEntity
         IsSuccessful = isSuccessful;
         FailureReason = failureReason;
         IpAddress = ipAddress;
+        OldValues = oldValues;
+        NewValues = newValues;
     }
 
     public Guid? UserId { get; }
@@ -45,4 +49,6 @@ public sealed class AuditLog:BaseEntity
     public bool IsSuccessful { get; }
     public string? FailureReason { get; }
     public string? IpAddress { get; }
+    public string? OldValues { get; }
+    public string? NewValues { get; }
 }
