@@ -1,6 +1,8 @@
 using ContentHub.Api.Extensions;
+using ContentHub.Api.HealthChecks;
 using ContentHub.Infrastructure.Identity;
 using ContentHub.Infrastructure.Options;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using Serilog;
 //using Microsoft.OpenApi;
@@ -33,8 +35,7 @@ builder.Host.UseSerilog((context, configuration) =>
 configuration.ReadFrom.Configuration(context.Configuration)
 );
 
-builder.Services.AddHealthChecks()
-    .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!, name: "sql-server");
+builder.Services.AddAPI(builder.Configuration);
 
 var app = builder.Build();
 
@@ -42,7 +43,11 @@ if (app.Environment.IsDevelopment())
 {
     //app.MapOpenApi();
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "ContentHub API v1");
+        options.SwaggerEndpoint("/swagger/v2/swagger.json", "ContentHub API v2");
+    });
 }
 
 app.UseHttpsRedirection();
@@ -70,7 +75,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 //-----------------------------------------
-app.MapHealthChecks("/health");
+app.MapHealthChecks("/health", new HealthCheckOptions { ResponseWriter = HealthCheckResponseWriter.WriteResponseAsync });
 //-----------------------------------------
 
 app.Run();

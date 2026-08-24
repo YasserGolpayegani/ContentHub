@@ -8,5 +8,3 @@ using System.Text;
 namespace ContentHub.Application.Features.Posts.Queries.GetAllPostsQuery;
 
 public sealed record GetAllPostsQuery() : IQuery<IReadOnlyList<PostDto>>;
-
-

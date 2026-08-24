@@ -1,4 +1,5 @@
-﻿using ContentHub.Api.Authorization;
+﻿using Asp.Versioning;
+using ContentHub.Api.Authorization;
 using ContentHub.Api.Authorization.Handlers;
 using ContentHub.Api.Services;
 using ContentHub.Application.Abstractions.Authentication;
@@ -62,6 +63,20 @@ public static class ServiceCollectionExtensions
             {
                 Title = "ContentHub API",
                 Version = "v1"
+            });
+
+            options.SwaggerDoc("v2", new OpenApiInfo
+            {
+                Title = "ContentHub API",
+                Version = "v2"
+            });
+
+            options.DocInclusionPredicate((documentName, apiDescription) =>
+            {
+                return string.Equals(
+                    apiDescription.GroupName,
+                    documentName,
+                    StringComparison.OrdinalIgnoreCase);
             });
 
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -211,6 +226,30 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IRefreshTokenService, RefreshTokenService>();
 
+
+        return services;
+    }
+
+    public static IServiceCollection AddAPI(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddHealthChecks()
+            .AddSqlServer(
+            configuration.GetConnectionString("DefaultConnection")!,
+            name: "sql-server");
+
+
+        services.AddApiVersioning(options =>
+        {
+            options.DefaultApiVersion = new ApiVersion(1, 0);
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            options.ReportApiVersions = true;
+            options.ApiVersionReader = new UrlSegmentApiVersionReader();
+        })
+        .AddApiExplorer(options =>
+        {
+            options.GroupNameFormat = "'v'VVV";
+            options.SubstituteApiVersionInUrl = true;
+        });
 
         return services;
     }

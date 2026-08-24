@@ -1,6 +1,6 @@
 ﻿namespace ContentHub.Application.DTOs.Posts;
 
-public class PostDto
+public sealed class PostDto
 {
     public Guid Id { get; set; }
     public string Title { get; set; } = string.Empty;

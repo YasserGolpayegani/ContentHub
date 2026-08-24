@@ -1,4 +1,5 @@
-﻿using ContentHub.Application.Features.Authentication.Commands.Login;
+﻿using Asp.Versioning;
+using ContentHub.Application.Features.Authentication.Commands.Login;
 using ContentHub.Application.Features.Authentication.Commands.Logout;
 using ContentHub.Application.Features.Authentication.Commands.Refresh;
 using ContentHub.Application.Features.Authentication.Commands.Register;
@@ -10,8 +11,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ContentHub.Api.Controllers
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[Controller]")]
     public sealed class AuthController : ControllerBase
     {
         private readonly ISender _sender;        

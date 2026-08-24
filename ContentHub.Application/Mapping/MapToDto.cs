@@ -22,6 +22,19 @@ public static class MapToDto
         };
     }
 
+    public static PostV2Dto PostV2Dto(Post post)
+    {
+        return new PostV2Dto
+        {
+            Id = post.Id,
+            Title = post.Title,
+            Slug = post.Slug,
+            IsPublished = post.IsPublished,
+            CreatedOnUtc = post.CreatedOnUtc,
+            AuthorName = "Author" //just for represent versioning feature.
+        };
+    }
+
     public static CategoryDto CategoryDto(Category category)
     {
         return new CategoryDto
