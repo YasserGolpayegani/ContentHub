@@ -18,12 +18,17 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Security.Claims;
+
 
 //using Microsoft.OpenApi;
 using System.Text;
+using System.Threading.RateLimiting;
 
 
 namespace ContentHub.Api.Extensions;
@@ -249,6 +254,83 @@ public static class ServiceCollectionExtensions
         {
             options.GroupNameFormat = "'v'VVV";
             options.SubstituteApiVersionInUrl = true;
+        });
+
+        services.AddRateLimiter(options =>
+        {
+            options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+            options.OnRejected = async (context, cancellationToken) =>
+            {
+                if (context.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
+                {
+                    context.HttpContext.Response.Headers.RetryAfter = Math.Ceiling(retryAfter.TotalSeconds).ToString();
+                }
+                await context.HttpContext.Response.WriteAsJsonAsync(
+                    new ProblemDetails
+                    {
+                        Status = StatusCodes.Status429TooManyRequests,
+                        Title = "Too Many Requests",
+                        Detail = "The request rate limit has been exceeded."
+                    },
+                    cancellationToken);
+            };
+
+            options.AddPolicy("api", httpContext =>
+            {
+                var clientIp = httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+
+                return RateLimitPartition.GetFixedWindowLimiter(
+                    clientIp,
+                    _ => new FixedWindowRateLimiterOptions
+                    {
+                        PermitLimit = 7,
+                        Window = TimeSpan.FromMinutes(1),
+                        QueueLimit = 0
+                    });
+            });
+
+            options.AddPolicy("auth", httpContext =>
+            {
+                var clientIP = httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+
+                return RateLimitPartition.GetFixedWindowLimiter(
+                    clientIP,
+                    _ => new FixedWindowRateLimiterOptions
+                    {
+                        PermitLimit = 5,
+                        Window = TimeSpan.FromMinutes(1),
+                        QueueLimit = 0,                        
+                    });
+            });
+
+            options.AddPolicy("user-api", httpContext =>
+            {
+                var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                if (!string.IsNullOrWhiteSpace(userId))
+                {
+                    return RateLimitPartition.GetFixedWindowLimiter(
+                        userId,
+                        _ => new FixedWindowRateLimiterOptions
+                        {
+                            PermitLimit = 4,
+                            Window = TimeSpan.FromMinutes(1),
+                            QueueLimit = 0
+                        });
+                }
+
+                var clientIp = httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+
+                return RateLimitPartition.GetFixedWindowLimiter(
+                    clientIp,
+                    _ => new FixedWindowRateLimiterOptions
+                    {
+                        PermitLimit = 2,
+                        Window = TimeSpan.FromMinutes(1),
+                        QueueLimit = 0
+                    });
+            });
         });
 
         return services;

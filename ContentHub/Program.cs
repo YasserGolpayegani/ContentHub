@@ -61,6 +61,8 @@ app.UseAuthentication();
 app.UseLoggingContext();
 app.UseSerilogRequestLogging();
 //-----------------------------------------
+app.UseRateLimiter();
+//-----------------------------------------
 app.UseAuthorization();
 
 

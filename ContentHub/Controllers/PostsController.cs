@@ -11,6 +11,7 @@ using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace ContentHub.Api.Controllers
 {
@@ -20,6 +21,7 @@ namespace ContentHub.Api.Controllers
     [ApiVersion("1.0",Deprecated =true)]
     [ApiVersion("2.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
+    [EnableRateLimiting("api")]    
     public class PostsController : ControllerBase
     {
         //private readonly IPostService _postService;
@@ -33,7 +35,7 @@ namespace ContentHub.Api.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        [MapToApiVersion("1.0")]
+        [MapToApiVersion("1.0")]        
         public async Task<ActionResult<IReadOnlyCollection<PostDto>>> GetAll(CancellationToken cancellationToken)
         {
             var posts = await _sender.Send(new GetAllPostsQuery(), cancellationToken);

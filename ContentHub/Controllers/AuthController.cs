@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace ContentHub.Api.Controllers
 {
@@ -15,6 +16,7 @@ namespace ContentHub.Api.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[Controller]")]
+    [EnableRateLimiting("auth")]
     public sealed class AuthController : ControllerBase
     {
         private readonly ISender _sender;        
@@ -71,6 +73,7 @@ namespace ContentHub.Api.Controllers
 
         [Authorize]
         [HttpGet("profile")]
+        [EnableRateLimiting("auth")]
         public IActionResult Profile()
         {
             var header = Request.Headers.Authorization.ToString();

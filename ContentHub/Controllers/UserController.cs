@@ -8,6 +8,7 @@ using ContentHub.Application.Features.Users.Queries.GetUsers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace ContentHub.Api.Controllers;
 
@@ -35,6 +36,7 @@ public class UserController : ControllerBase
 
     [HttpGet("{id:guid}")]
     [HasPermission(PermissionNames.Users.Read)]
+    [EnableRateLimiting("user-api")]
     public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
     {
         var user = await _sender.Send(new GetUserByIdQuery(id), cancellationToken);
