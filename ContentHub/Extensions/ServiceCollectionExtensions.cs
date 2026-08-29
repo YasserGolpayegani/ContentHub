@@ -3,6 +3,7 @@ using ContentHub.Api.Authorization;
 using ContentHub.Api.Authorization.Handlers;
 using ContentHub.Api.Services;
 using ContentHub.Application.Abstractions.Authentication;
+using ContentHub.Application.Abstractions.Caching;
 using ContentHub.Application.Abstractions.Persistence;
 using ContentHub.Application.Behaviors;
 using ContentHub.Application.Features.Posts.Commands.CreatePost;
@@ -194,43 +195,13 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
-        services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
-
-        //services.AddAuthorization(options =>
-        //{
-        //    options.AddPolicy(Policies.AdminOnly, policy => policy.RequireRole(Roles.Admin));
-
-        //    options.AddPolicy(
-        //        Policies.AuthorOrAdmin,
-        //        policy => policy.RequireRole(Roles.Admin, Roles.Author));
-
-
-
-        //    options.AddPolicy(
-        //         Policies.ViewPosts,
-        //         policy => policy.RequireClaim("permission", PermissionNames.Posts.Read));
-
-        //    options.AddPolicy(
-        //        Policies.CreatePosts,
-        //        policy => policy.RequireClaim("permission", PermissionNames.Posts.Create));
-
-        //    options.AddPolicy(
-        //        Policies.UpdatePosts,
-        //        policy => policy.RequireClaim("permission", PermissionNames.Posts.Update));
-
-        //    options.AddPolicy(
-        //        Policies.DeletePosts,
-        //        policy => policy.RequireClaim("permission", PermissionNames.Posts.Delete));
-
-        //    options.AddPolicy(
-        //        Policies.PublishPosts,
-        //        policy => policy.RequireClaim("permission", PermissionNames.Posts.Publish));
-        //});
+        services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();        
 
         services.AddScoped<IJwtService, JwtService>();
 
         services.AddScoped<IRefreshTokenService, RefreshTokenService>();
 
+        services.AddScoped<ICacheService,MemoryCacheService>();
 
         return services;
     }

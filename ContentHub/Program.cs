@@ -37,6 +37,8 @@ configuration.ReadFrom.Configuration(context.Configuration)
 
 builder.Services.AddAPI(builder.Configuration);
 
+builder.Services.AddMemoryCache();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

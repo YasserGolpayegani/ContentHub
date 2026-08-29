@@ -1,5 +1,7 @@
-﻿using ContentHub.Application.Abstractions.Messaging;
+﻿using ContentHub.Application.Abstractions.Caching;
+using ContentHub.Application.Abstractions.Messaging;
 using ContentHub.Application.Abstractions.Persistence;
+using ContentHub.Application.Constants;
 using ContentHub.Application.Exceptions;
 using MediatR;
 
@@ -8,10 +10,12 @@ namespace ContentHub.Application.Features.Posts.Commands.UpdatePost;
 public sealed class UpdatePostCommandHandler : ICommandHandler<UpdatePostCommand>
 {
     private readonly IPostRepository _postRepository;
+    private readonly ICacheService _cacheService;
 
-    public UpdatePostCommandHandler(IPostRepository postRepository)
+    public UpdatePostCommandHandler(IPostRepository postRepository, ICacheService cacheService)
     {
         _postRepository = postRepository;
+        _cacheService = cacheService;
     }
 
     async Task IRequestHandler<UpdatePostCommand>.Handle(UpdatePostCommand request, CancellationToken cancellationToken)
@@ -24,6 +28,8 @@ public sealed class UpdatePostCommandHandler : ICommandHandler<UpdatePostCommand
         post.Update(request.Title, request.Content, request.Slug, request.CategoryId);
 
         _postRepository.Update(post);
+
+        await _cacheService.RemoveAsync(CacheKeys.Posts);
 
         //Saving perform on UnitOfWork
         //await _postRepository.SaveChangesAsync(cancellationToken);
