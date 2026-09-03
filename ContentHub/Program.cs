@@ -2,6 +2,7 @@ using ContentHub.Api.Extensions;
 using ContentHub.Api.HealthChecks;
 using ContentHub.Infrastructure.Identity;
 using ContentHub.Infrastructure.Options;
+using ContentHub.Persistence.Contexts;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -73,6 +74,12 @@ app.MapControllers();
 //-----------------------------------------
 using (var scope = app.Services.CreateScope())
 {
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+    // این خط دیتابیس را اگر وجود ندارد می‌سازد
+    await dbContext.Database.EnsureCreatedAsync();
+
+
     var seeder = scope.ServiceProvider.GetRequiredService<IdentityDataSeeder>();
 
     await seeder.SeedAsync();

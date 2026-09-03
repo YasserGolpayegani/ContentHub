@@ -1,4 +1,9 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".env" />
+    <File Path="docker-compose.yml" />
+    <File Path="Dockerfile" />
+  </Folder>
   <Project Path="ContentHub.Application/ContentHub.Application.csproj" />
   <Project Path="ContentHub.Domain/ContentHub.Domain.csproj" />
   <Project Path="ContentHub.Infrastructure/ContentHub.Infrastructure.csproj" />

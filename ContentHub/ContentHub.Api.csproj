@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>807f8f8a-c2e6-40b1-bd38-84d11f6c2dcd</UserSecretsId>
+    <OutputType>Exe</OutputType>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 

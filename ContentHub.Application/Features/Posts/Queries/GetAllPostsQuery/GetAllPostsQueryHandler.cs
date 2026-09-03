@@ -32,7 +32,7 @@ public sealed class GetAllPostsQueryHandler : IQueryHandler<GetAllPostsQuery, IR
 
         await _cacheService.SetAsync(CacheKeys.Posts, postDtos, TimeSpan.FromMinutes(5));
 
-        return postDtos;
+        return postDtos ;
     }
 }
 
