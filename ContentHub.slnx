@@ -4,9 +4,15 @@
     <File Path="docker-compose.yml" />
     <File Path="Dockerfile" />
   </Folder>
-  <Project Path="ContentHub.Application/ContentHub.Application.csproj" />
-  <Project Path="ContentHub.Domain/ContentHub.Domain.csproj" />
-  <Project Path="ContentHub.Infrastructure/ContentHub.Infrastructure.csproj" />
-  <Project Path="ContentHub.Persistence/ContentHub.Persistence.csproj" />
-  <Project Path="ContentHub/ContentHub.Api.csproj" />
+  <Folder Name="/src/">
+    <Project Path="ContentHub.Application/ContentHub.Application.csproj" />
+    <Project Path="ContentHub.Domain/ContentHub.Domain.csproj" />
+    <Project Path="ContentHub.Infrastructure/ContentHub.Infrastructure.csproj" />
+    <Project Path="ContentHub.Persistence/ContentHub.Persistence.csproj" />
+    <Project Path="ContentHub/ContentHub.Api.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ContentHub.IntegrationTests/ContentHub.IntegrationTests.csproj" />
+    <Project Path="tests/ContentHub.UnitTests/ContentHub.UnitTests.csproj" />
+  </Folder>
 </Solution>

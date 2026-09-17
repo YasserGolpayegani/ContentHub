@@ -19,7 +19,7 @@ public class PostRepository : IPostRepository
         return await _context.Posts
             .AsNoTracking()
             .OrderByDescending(x => x.CreatedOnUtc)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<Post?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)

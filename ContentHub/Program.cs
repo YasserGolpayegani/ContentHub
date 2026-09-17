@@ -1,10 +1,8 @@
 using ContentHub.Api.Extensions;
 using ContentHub.Api.HealthChecks;
 using ContentHub.Infrastructure.Identity;
-using ContentHub.Infrastructure.Options;
 using ContentHub.Persistence.Contexts;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.OpenApi.Models;
 using Serilog;
 //using Microsoft.OpenApi;
 
@@ -90,3 +88,9 @@ app.MapHealthChecks("/health", new HealthCheckOptions { ResponseWriter = HealthC
 //-----------------------------------------
 
 app.Run();
+
+
+//For finding Program.cs by Test Project
+public partial class Program
+{
+}
